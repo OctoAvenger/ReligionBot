@@ -1,14 +1,11 @@
 {
-  "name": "religionbot",
-  "version": "0.0.5",
-  "description": "This.",
+  "name": "ReligionBot",
+  "description": "This bot is the offical bot for Religious Online Discussions",
+  "version": "0.5",
   "main": "bot.js",
   "scripts": {
     "start": "node bot.js"
   },
-  "author": "Nathan McLaughlin",
-  "license": "ISC"
-}
   "dependencies": {
     "discord.js": "11.1.0"
   }
