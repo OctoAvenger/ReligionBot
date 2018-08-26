@@ -18,6 +18,7 @@ bot.on("message", (message) => {
         if (message.content == prefix + "religions") {
         message.channel.send({embed: {
             title: "Assignable Roles:\n\n",
+            color: 0xF1DA75,
             fields: [
             { name: "Abrahamic:", value: "Christian\nMuslim\nJewish\nBahá'í", inline: true},
             { name: "Eastern:", value: "Hindu\nBuddhist\nTaoist\nConfucian\nSikhi", inline: true},
@@ -29,6 +30,7 @@ bot.on("message", (message) => {
     if (message.content == prefix + "christian") {
         message.channel.send({embed: {
             title: "Assignable Roles:\n\n",
+            color: 0xF1DA75,
             fields: [
             { name: "Cathodox:", value: "Catholic\nOrthodox\nAnglican", inline: true},
             { name: "Protestant:", value: "Baptist\nLutheran\nMethodist\nReformed", inline: true},
@@ -41,6 +43,7 @@ bot.on("message", (message) => {
     if (message.content == prefix + "muslim") {
         message.channel.send({embed: {
             title: "Assignable Roles:\n\n",
+            color: 0xF1DA75,
             fields: [
             { name: "Muslim:", value: "Sunni\nShia\nKharijite\nSufi\n\nContact a moderator if there is a role you think should be added.", inline: true},
         ]
@@ -50,6 +53,7 @@ bot.on("message", (message) => {
     if (message.content == prefix + "irreligious") {
         message.channel.send({embed: {
             title: "Assignable Roles:\n\n",
+            color: 0xF1DA75,
             fields: [
             { name: "Irreligious:", value: "Atheist\nAgnostic\nIgnostic\n\nContact a moderator if there is a role you think should be added.", inline: true}
         ]
@@ -59,6 +63,7 @@ bot.on("message", (message) => {
     if (message.content == prefix + "hindu") {
         message.channel.send({embed: {
             title: "Assignable Roles:\n\n",
+            color: 0xF1DA75,
             fields: [
             { name: "Hindu:", value: "Vaishnavi\nShaivi\n\nContact a moderator if there is a role you think should be added.", inline: true}
         ]
@@ -68,6 +73,7 @@ bot.on("message", (message) => {
     if (message.content == prefix + "buddhist") {
         message.channel.send({embed: {
             title: "Assignable Roles:\n\n",
+            color: 0xF1DA75,
             fields: [
             { name: "Buddhist:", value: "Theravada\nMahayana\nVajrayana\n\nContact a moderator if there is a role you think should be added.", inline: true}
         ]
@@ -77,6 +83,7 @@ bot.on("message", (message) => {
     if (message.content == prefix + "jewish") {
         message.channel.send({embed: {
             title: "Assignable Roles:\n\n",
+            color: 0xF1DA75,
             fields: [
             { name: "Jewish:", value: "Orthodox\nConservitive\nReformed\nReconstructionist\n\nContact a moderator if there is a role you think should be added.", inline: true}
         ]
@@ -93,11 +100,36 @@ bot.on("message", (message) => {
 });
 
 bot.on('guildMemberAdd', member => {
-    const channel = member.guild.channels.find('name', 'member-log');
-    if (!channel) return;
-    channel.send(`Welcome ${member} to **Religious Online Discussions**! We are a server dedicated to Interfaith cooperation to study religion and other philosophies to bring us closer to any Power we believe in whether that be one God, many gods, no god, etc.\nTo get yourself started please do ".religions" to check out the roles we have and do ".iam [role]" to add the role to yourself.\nContact a staff member if you need assistence and enjoy your time here.`);
+    const unverified = member.guild.channels.find('name', 'unverified');
+    const logs = member.guild.channels.find('name', 'staff-logs')
+
+    if (!unverified) return;
+    unverified.send(`Welcome ${member} to **Religious Online Discussions**! We are a server dedicated to Interfaith cooperation to study religion and other philosophies to bring us closer to any Power we believe in whether that be one God, many gods, no god, etc.\nTo get yourself started please do ".religions" to check out the roles we have and do ".iam [role]" to add the role to yourself.\nContact a staff member if you need assistence and enjoy your time here.`);
+    logs.send({embed: {
+        title: "User joined:\n\n",
+        color: 0x66ba67,
+        /*thumbnail: member.user.displayAvatarURL,*/
+        fields: [
+            { name: "Username:", value: `${member}`, inline: true},
+            { name: "Joined server:", value: `${member.joinedAt}`, inline: true},
+            { name: "Joined Discord:", value: `${member.user.createdAt}\n\nUser ID: ${member.id}`, inline: true}
+        ]
+      }
+    });
   });
+bot.on('guildMemberRemove', member => {
+    const logs = member.guild.channels.find('name', 'staff-logs')
+    logs.send({embed: {
+        title: "User left:\n\n",
+        color: 0xaa3333,
+        fields: [
+            { name: "Username:", value: `${member}\n\nUser ID: ${member.id}`, inline: true},
+            { name: "Famous Last Words:", value: `${member.lastMessage}`, inline: true},
+        ]
+        }
+    });
+});
 
 console.log("Bot on.")
 //Bot login Token.
-bot.login("[TOKEN]");
+bot.login(process.env.BOT_TOKEN);
