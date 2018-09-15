@@ -2,11 +2,12 @@
 const Discord = require("discord.js");
 const fs = require("fs");
 const ms = require("ms");
+const schedule = require("Node-Schedule");
 const bot = new Discord.Client();
 const prefix = ".";
 const game = ".help";
 
-//Messages and commands that MormonBot can proform.
+//Message Commands ReligionBot can proform.
 bot.on("message", (message) => {
     //Help message. Useful for new users.
     if (message.content == prefix + "help") {
@@ -141,7 +142,7 @@ bot.on("message", (message) => {
                 title: "Deleted Messages:\n\n",
                 color: 0x5a5a5a,
                 fields: [
-                    { name: "Deleted By::", value: `${message.member.user.username}#${message.member.user.discriminator}\n\nUser ID: ${message.member.user.id}`, inline: true},
+                    { name: "Deleted By:", value: `${message.member.user.username}#${message.member.user.discriminator}\n\nUser ID: ${message.member.user.id}`, inline: true},
                     { name: "Messages Deleted:", value: `${message.content.slice(8, message.content.length)}`, inline: true}
                 ]
                 }
@@ -428,13 +429,77 @@ bot.on("message", (message) => {
         message.reply('That\'s nice but who do you want to ban?');
       }
     }
-    /*if (new Date().getHours() == '5' && new Date().getMinutes() == '00') {
-        console.log("It worked");
-                bot.channels.find("id", "390360891528445961").send(`<@&390363444857012226> today we are reading something-something`);
-                bot.channels.find("id", "391052829831462913").send(`<@&391051443672711168> today we are reading something-something`);
-                bot.channels.find("id", "390359294115053581").send(`<@&390363313869029387> today we are reading something-something`);
-    }*/
+//Temporary
+    if (message.content.startsWith(prefix + 'test')) {
+        const ROD = bot.guilds.get('359925003359354890')
+        const daily = ROD.channels.find('name', 'daily-passage')
+        var passageNum = Math.floor(Math.random() * 6);
+        const bible = [
+            name = "New Testament (KJV)",
+            icon = "https://is3-ssl.mzstatic.com/image/thumb/Purple128/v4/18/e0/c7/18e0c7e2-be8b-4d14-149c-c195d8409e32/source/512x512bb.jpg",
+            colour = 0x90b1e5,
+            passage = {
+                passageName: ["John 3:16", "Matthew 6:9-13", "John 14:6", "Luke 11:9-10", "Ephesians 2:8"],
+                passageText: ["For God so loved the world, that he gave his only begotten Son, that whosoever believeth in him should not perish, but have everlasting life.",
+                               "Our Father which art in heaven, Hallowed be thy name. Thy kingdom come, Thy will be done in earth, as it is in heaven. Give us this day our daily bread. And forgive us our debts, as we forgive our debtors.  And lead us not into temptation, but deliver us from evil: For thine is the kingdom, and the power, and the glory, for ever. Amen.",
+                               "Jesus saith unto him, I am the way, the truth, and the life: no man cometh unto the Father, but by me.",
+                               "And I say unto you, Ask, and it shall be given you; seek, and ye shall find; knock, and it shall be opened unto you. For every one that asketh receiveth; and he that seeketh findeth; and to him that knocketh it shall be opened.",
+                               "For by grace are ye saved through faith; and that not of yourselves: it is the gift of God:"
+                            ]
+                        },
+            channels = ["<#455111068499312653>", "<#455111068499312653>", "<#455111068499312653>"]
+        ];
+            daily.send({embed: {
+                author: {
+                    name: bible.name,
+                    icon_url: bible.icon
+                },
+                color: bible.colour,
+                fields: [
+                { name: bible.passage.passageName[passageNum], value: bible.passage.passageText[passageNum], inline: true},
+                ]
+            }
+            })
+            daily.send(`@ everyone feel free to discuss today's passage in ${bible.channels[1]}, ${bible.channels[2]} or ${bible.channels[3]} 😄`)
+        }
 });
+
+//Testing with .test ^
+/*bot.on('ready', () => {
+    var j = schedule.scheduleJob({hour: 16, minute: 11}, function() {
+        var book = Math.floor(Math.random() * 8);
+        const ROD = bot.guilds.get('359925003359354890')
+        const daily = ROD.channels.find('name', 'daily-passage')
+        var passage = Math.floor(Math.random() * 6);
+        const bible = [
+            name = "New Testament (KJV)",
+            icon = "https://is3-ssl.mzstatic.com/image/thumb/Purple128/v4/18/e0/c7/18e0c7e2-be8b-4d14-149c-c195d8409e32/source/512x512bb.jpg",
+            colour = 0x90b1e5,
+            passage = [
+                passageName = ["John 3:16", "Matthew 6:9-13", "John 14:6", "Luke 11:9-10", "Ephesians 2:8"],
+                passageText = ["For God so loved the world, that he gave his only begotten Son, that whosoever believeth in him should not perish, but have everlasting life.",
+                               "Our Father which art in heaven, Hallowed be thy name. Thy kingdom come, Thy will be done in earth, as it is in heaven. Give us this day our daily bread. And forgive us our debts, as we forgive our debtors.  And lead us not into temptation, but deliver us from evil: For thine is the kingdom, and the power, and the glory, for ever. Amen.",
+                               "Jesus saith unto him, I am the way, the truth, and the life: no man cometh unto the Father, but by me.",
+                               "And I say unto you, Ask, and it shall be given you; seek, and ye shall find; knock, and it shall be opened unto you. For every one that asketh receiveth; and he that seeketh findeth; and to him that knocketh it shall be opened.",
+                               "For by grace are ye saved through faith; and that not of yourselves: it is the gift of God:"
+                            ]
+            ],
+            channels = ["<#455111068499312653>", "<#455111068499312653>", "<#455111068499312653>"]
+        ];
+            daily.send({embed: {
+                author: {
+                    name: bible.name,
+                    icon_url: bible.icon
+                },
+                color: bible.colour,
+                fields: [
+                { name: bible.passage.passageName[passage], value: bible.passage.passageText[[assage]], inline: true},
+                ]
+            }
+            })
+            daily.send(`@everyone feel free to discuss today's passage in ${bible.channels[1]}, ${bible.channels[2]} or ${bible.channels[3]} 😄`)
+      });
+});*/
 
 bot.on('guildMemberAdd', member => {
     const unverified = member.guild.channels.find('name', 'unverified');
