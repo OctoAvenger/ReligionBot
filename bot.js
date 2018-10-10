@@ -5,7 +5,16 @@ const ms = require("ms");
 const schedule = require("Node-Schedule");
 const bot = new Discord.Client();
 const prefix = ".";
-const game = ".help";
+
+bot.on('ready', () => {
+    bot.user.setStatus('available')
+    bot.user.setPresence({
+        game: {
+            name: `commands. Try ".help"`,
+            type: 2
+        }
+    });
+});
 
 //Message Commands ReligionBot can proform.
 bot.on("message", (message) => {
@@ -42,7 +51,7 @@ bot.on("message", (message) => {
             color: 0xF1DA75,
             fields: [
             { name: "Christian (1):", value: "Catholic\nOrthodox\nAnglican\nBaptist\nLutheran\nMethodist", inline: true},
-            { name: "Christian (2):", value: "Reformed\nLDS (Mormon)\nJehovah's Witness\nMessianic Jew\nCongregational", inline: true},
+            { name: "Christian (2):", value: "Reformed\nLatter-Day Saint\nJehovah's Witness\nMessianic Jew\nCongregational", inline: true},
             { name: "Muslim:", value: "Sunni\nShia\nKharijite\nSufi", inline: true},
             { name: "Irreligious:", value: "Atheist\nAgnostic\nIgnostic", inline: true},
             { name: "Hindu:", value: "Vaishnavi\nShaivi", inline: true},
@@ -70,6 +79,13 @@ bot.on("message", (message) => {
             if (!message.content.startsWith(prefix + "iamn")) {
                 message.reply(`I was unable to add \`${message.content.slice(5, message.content.length)}\` role. Please make sure that role exists and that you have permission to add it.`);
             }
+        });
+    }
+    if (message.content == prefix + "done" && message.channel.name == 'unverified' && message.member.roles.size > 2) {
+        const general = message.member.guild.channels.find('name', 'general');
+        const unverified = message.guild.roles.find("name", "Unverified");
+        message.member.removeRole(unverified).then(() => {
+            general.send(`Welcome, ${message.member.user}!\nIf you'd like to add roles type \`.roles\` or \`.denominations\` in <#455112761769459723>.`);
         });
     }
     if (message.content.startsWith(prefix + "iamn")) {
@@ -126,7 +142,7 @@ bot.on("message", (message) => {
         message.channel.send(embed).then(sentEmbed => {
             sentEmbed.react("👍")
             const filter = (reaction, user) => reaction.emoji.name === '👍' && user.id === '421725581952942081'
-            message.awaitReactions(filter, { time: 25000 })
+            message.awaitReactions(filter, { time: 35000 })
             .then(sentEmbed.react("👎"))
         })
     }
@@ -563,7 +579,7 @@ bot.on("message", (message) => {
                 icon: "",
                 colour: 0xcf9b17,
                 passage : {
-                    passageName: ["Doctrine and Covenants 1:37-38", "Doctrine and Covenants 6:36", "Doctrine and Covenants ", "Doctrine and Covenants ", "Doctrine and Covenants ", "Doctrine and Covenants ", "Doctrine and Covenants ", "Doctrine and Covenants ", "Doctrine and Covenants ", "Doctrine and Covenants ", "Doctrine and Covenants ", "Doctrine and Covenants ", "Doctrine and Covenants ", "Doctrine and Covenants ", "Doctrine and Covenants ", "Doctrine and Covenants ", "Doctrine and Covenants ", "Doctrine and Covenants ", "Doctrine and Covenants ", "Doctrine and Covenants ", "Doctrine and Covenants ", "Doctrine and Covenants ", "Doctrine and Covenants ", "Doctrine and Covenants ", ],
+                    passageName: ["Doctrine and Covenants 1:37-38", "Doctrine and Covenants 6:36", "Doctrine and Covenants 8:2–3", "Doctrine and Covenants 13:1", "Doctrine and Covenants 18:10–11", "Doctrine and Covenants 18:15-16", "Doctrine and Covenants 19:16–19", "Doctrine and Covenants 21:4–6", "Doctrine and Covenants 29:10–11", "Doctrine and Covenants 42:11", "Doctrine and Covenants 49:15–17", "Doctrine and Covenants 58:42–43", "Doctrine and Covenants 64:9–11", "Doctrine and Covenants 6:22–24", "Doctrine and Covenants 82:10", "Doctrine and Covenants 84:20–22", "Doctrine and Covenants 88:118", "Doctrine and Covenants 89:18–21", "Doctrine and Covenants 107:8", "Doctrine and Covenants 121:36, 41–42", "Doctrine and Covenants 130:22–23", "Doctrine and Covenants 131:1–4", "Doctrine and Covenants 135:3"],
                     passageText: ["Search these commandments, for they are true and faithful, and the prophecies and promises which are in them shall all be fulfilled. What I the Lord have spoken, I have spoken, and I excuse not myself; and though the heavens and the earth pass away, my word shall not pass away, but shall all be fulfilled, whether by mine own voice or by the voice of my servants, it is the same.",
                                   "Look unto me in every thought; doubt not, fear not.",
                                   "",
@@ -596,8 +612,9 @@ bot.on("message", (message) => {
                 icon: "",
                 colour: 0xcf9b17,
                 passage : {
-                    passageName: [],
-                    passageText: []
+                    passageName: ["Moses 1:39", "Moses 7:18"],
+                    passageText: ["For behold, this is my work and my glory—to bring to pass the immortality and eternal life of man.",
+                                  "And the Lord called his people Zion, because they were of one heart and one mind, and dwelt in righteousness;"]
                 },
                 channels: ""
             },
@@ -695,7 +712,7 @@ bot.on('guildMemberAdd', member => {
     const logs = member.guild.channels.find('name', 'join-log')
 
     if (!unverified) return;
-    unverified.send(`Welcome ${member} to **Religious Online Discussions**! We are a server dedicated to Interfaith cooperation to study religion and other philosophies to bring us closer to any Power we believe in whether that be one God, many gods, no god, etc.\nTo get yourself started please do \`.religions\` to check out the roles we have and do \`.iam [role]\` to add the role to yourself.\nContact a staff member if you need assistance and enjoy your time here.`);
+    unverified.send(`Welcome ${member} to **Religious Online Discussions**! We are a server dedicated to Interfaith cooperation to study religion and other philosophies to bring us closer to any Power we believe in whether that be one God, many gods, no god, etc.\nTo get yourself started please do \`.religions\` to check out the roles we have and do \`.iam [role]\` to add the role to yourself. Once you have at least one role use \`.done\`.\nContact a staff member if you need assistance and enjoy your time here.`);
     member.addRole(member.guild.roles.find("name", "Unverified"))
     logs.send({embed: {
         title: "User joined:\n\n",
@@ -715,13 +732,11 @@ bot.on('guildMemberRemove', member => {
         color: 0xaa3333,
         fields: [
             { name: "Username:", value: `${member.user.username}#${member.user.discriminator}\n\nUser ID: ${member.id}`, inline: true},
-            { name: "Famous Last Words:", value: `${member.lastMessage}`, inline: true},
+            { name: "Left server:", value: `${member.removedAt}`, inline: true},
         ]
         }
     });
 });
 
-
-console.log("Bot on.")
 //Bot login Token.
 bot.login(process.env.BOT_TOKEN);
