@@ -671,7 +671,7 @@ bot.on("message", (message) => {
         }
 });
 
-bot.on('ready', () => {
+/*bot.on('ready', () => {
     var j = schedule.scheduleJob({hour: 21, minute: 38}, function() {
         var book = Math.floor(Math.random() * 8);
         const rod = bot.guilds.get('359925003359354890')
@@ -705,7 +705,7 @@ bot.on('ready', () => {
             })
             daily.send(`@everyone feel free to discuss today's passage in ${bible.channels[1]}, ${bible.channels[2]} or ${bible.channels[3]} 😄`)
       });
-});
+});*/
 
 bot.on('guildMemberAdd', member => {
     const unverified = member.guild.channels.find('name', 'unverified');
