@@ -150,7 +150,7 @@ bot.on("message", (message) => {
     if (message.content.startsWith(prefix + 'delete')) {
         if(!message.member.roles.some(r=>["Administrator", "Moderator"].includes(r.name)))
         return message.reply("Sorry, you don't have permissions to use this!");
-            const logs = message.member.guild.channels.find('name', 'delete-log');
+            const logs = message.member.guild.channels.find('name', 'mod-log');
             message.delete(100).then(() => {
             message.channel.bulkDelete(message.content.slice(8, message.content.length)).then(() => {
             message.reply(`Successfully deleted \`${message.content.slice(8, message.content.length)}\` messages`).then(msg => msg.delete(3000));
