@@ -159,7 +159,8 @@ bot.on("message", (message) => {
                 color: 0x5a5a5a,
                 fields: [
                     { name: "Deleted By:", value: `${message.member.user.username}#${message.member.user.discriminator}\n\nUser ID: ${message.member.user.id}`, inline: true},
-                    { name: "Messages Deleted:", value: `${message.content.slice(8, message.content.length)}`, inline: true}
+                    { name: "Messages Deleted:", value: `${message.content.slice(8, message.content.length)}`, inline: true},
+                    { name: "Deleted in:", value: `${message.channel}`, inline: true}
                 ]
                 }
             });
@@ -252,6 +253,7 @@ bot.on("message", (message) => {
                     fields: [
                         { name: "Username:", value: `${member.user.username}#${member.user.discriminator}\n\nUser ID: ${member.id}`, inline: true},
                         { name: "Reason:", value: reason, inline: true},
+                        { name: "Moderator:", value: `${message.member.user.username}#${message.member.user.discriminator}\n\nUser ID: ${message.member.id}`, inline: true},
                     ]
                     }
                 });
@@ -288,6 +290,7 @@ bot.on("message", (message) => {
                     fields: [
                         { name: "Username:", value: `${member.user.username}#${member.user.discriminator}\n\nUser ID: ${member.id}`, inline: true},
                         { name: "Reason:", value: reason, inline: true},
+                        { name: "Moderator:", value: `${message.member.user.username}#${message.member.user.discriminator}\n\nUser ID: ${message.member.id}`, inline: true},
                     ]
                     }
                 });
@@ -326,6 +329,7 @@ bot.on("message", (message) => {
                     fields: [
                         { name: "Username:", value: `${member.user.username}#${member.user.discriminator}\n\nUser ID: ${member.id}`, inline: true},
                         { name: "Reason:", value: reason, inline: true},
+                        { name: "Moderator:", value: `${message.member.user.username}#${message.member.user.discriminator}\n\nUser ID: ${message.member.id}`, inline: true},
                     ]
                     }
                 });
@@ -362,6 +366,7 @@ bot.on("message", (message) => {
                     fields: [
                         { name: "Username:", value: `${member.user.username}#${member.user.discriminator}\n\nUser ID: ${member.id}`, inline: true},
                         { name: "Reason:", value: reason, inline: true},
+                        { name: "Moderator:", value: `${message.member.user.username}#${message.member.user.discriminator}\n\nUser ID: ${message.member.id}`, inline: true},
                     ]
                     }
                 });
@@ -397,6 +402,7 @@ bot.on("message", (message) => {
                     fields: [
                         { name: "Username:", value: `${member.user.username}#${member.user.discriminator}\n\nUser ID: ${member.id}`, inline: true},
                         { name: "Reason:", value: reason, inline: true},
+                        { name: "Moderator:", value: `${message.member.user.username}#${message.member.user.discriminator}\n\nUser ID: ${message.member.id}`, inline: true},
                     ]
                     }
                 });
@@ -432,6 +438,7 @@ bot.on("message", (message) => {
                     fields: [
                         { name: "Username:", value: `${member.user.username}#${member.user.discriminator}\n\nUser ID: ${member.id}`, inline: true},
                         { name: "Reason:", value: reason, inline: true},
+                        { name: "Moderator:", value: `${message.member.user.username}#${message.member.user.discriminator}\n\nUser ID: ${message.member.id}`, inline: true},
                     ]
                     }
                 });
