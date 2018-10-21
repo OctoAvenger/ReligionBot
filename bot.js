@@ -1,4 +1,4 @@
-//Defines bot/prefix and languages used.
+ //Defines bot/prefix and languages used.
 const Discord = require("discord.js");
 const fs = require("fs");
 const ms = require("ms");
@@ -39,7 +39,7 @@ bot.on("message", (message) => {
             color: 0xF1DA75,
             fields: [
             { name: "Abrahamic:", value: "Christian\nMuslim\nJewish\nBahá'í", inline: true},
-            { name: "Eastern:", value: "Hindu\nBuddhist\nTaoist\nConfucian\nSikhi", inline: true},
+            { name: "Eastern:", value: "Hindu\nBuddhist\nDaoist\nConfucian\nSikhi", inline: true},
             { name: "Other:", value: "Unitarian Universalist\nIrreligious\nPagan\nGnostic\nPanentheist\nOther\n\n**To see available denomination roles do \`.denominations\`**", inline: true}
             ]
           }
@@ -159,8 +159,7 @@ bot.on("message", (message) => {
                 color: 0x5a5a5a,
                 fields: [
                     { name: "Deleted By:", value: `${message.member.user.username}#${message.member.user.discriminator}\n\nUser ID: ${message.member.user.id}`, inline: true},
-                    { name: "Messages Deleted:", value: `${message.content.slice(8, message.content.length)}`, inline: true},
-                    { name: "Deleted in:", value: `${message.channel}`, inline: true}
+                    { name: "Messages Deleted:", value: `${message.content.slice(8, message.content.length)}`, inline: true}
                 ]
                 }
             });
@@ -253,7 +252,6 @@ bot.on("message", (message) => {
                     fields: [
                         { name: "Username:", value: `${member.user.username}#${member.user.discriminator}\n\nUser ID: ${member.id}`, inline: true},
                         { name: "Reason:", value: reason, inline: true},
-                        { name: "Moderator:", value: `${message.member.user.username}#${message.member.user.discriminator}\n\nUser ID: ${message.member.id}`, inline: true},
                     ]
                     }
                 });
@@ -290,7 +288,6 @@ bot.on("message", (message) => {
                     fields: [
                         { name: "Username:", value: `${member.user.username}#${member.user.discriminator}\n\nUser ID: ${member.id}`, inline: true},
                         { name: "Reason:", value: reason, inline: true},
-                        { name: "Moderator:", value: `${message.member.user.username}#${message.member.user.discriminator}\n\nUser ID: ${message.member.id}`, inline: true},
                     ]
                     }
                 });
@@ -329,7 +326,6 @@ bot.on("message", (message) => {
                     fields: [
                         { name: "Username:", value: `${member.user.username}#${member.user.discriminator}\n\nUser ID: ${member.id}`, inline: true},
                         { name: "Reason:", value: reason, inline: true},
-                        { name: "Moderator:", value: `${message.member.user.username}#${message.member.user.discriminator}\n\nUser ID: ${message.member.id}`, inline: true},
                     ]
                     }
                 });
@@ -366,7 +362,6 @@ bot.on("message", (message) => {
                     fields: [
                         { name: "Username:", value: `${member.user.username}#${member.user.discriminator}\n\nUser ID: ${member.id}`, inline: true},
                         { name: "Reason:", value: reason, inline: true},
-                        { name: "Moderator:", value: `${message.member.user.username}#${message.member.user.discriminator}\n\nUser ID: ${message.member.id}`, inline: true},
                     ]
                     }
                 });
@@ -402,7 +397,6 @@ bot.on("message", (message) => {
                     fields: [
                         { name: "Username:", value: `${member.user.username}#${member.user.discriminator}\n\nUser ID: ${member.id}`, inline: true},
                         { name: "Reason:", value: reason, inline: true},
-                        { name: "Moderator:", value: `${message.member.user.username}#${message.member.user.discriminator}\n\nUser ID: ${message.member.id}`, inline: true},
                     ]
                     }
                 });
@@ -438,7 +432,6 @@ bot.on("message", (message) => {
                     fields: [
                         { name: "Username:", value: `${member.user.username}#${member.user.discriminator}\n\nUser ID: ${member.id}`, inline: true},
                         { name: "Reason:", value: reason, inline: true},
-                        { name: "Moderator:", value: `${message.member.user.username}#${message.member.user.discriminator}\n\nUser ID: ${message.member.id}`, inline: true},
                     ]
                     }
                 });
