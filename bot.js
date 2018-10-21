@@ -738,5 +738,7 @@ bot.on('guildMemberRemove', member => {
     });
 });
 
+
+console.log("Bot on.")
 //Bot login Token.
 bot.login(process.env.BOT_TOKEN);
