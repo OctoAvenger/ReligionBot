@@ -2,7 +2,7 @@
 const Discord = require("discord.js");
 const fs = require("fs");
 const ms = require("ms");
-/*const schedule = require("Node-Schedule");*/
+const schedule = require("Node-Schedule");
 const bot = new Discord.Client();
 const prefix = ".";
 
@@ -39,7 +39,7 @@ bot.on("message", (message) => {
             color: 0xF1DA75,
             fields: [
             { name: "Abrahamic:", value: "Christian\nMuslim\nJewish\nBahá'í", inline: true},
-            { name: "Eastern:", value: "Hindu\nBuddhist\nTaoist\nConfucian\nSikhi", inline: true},
+            { name: "Eastern:", value: "Hindu\nBuddhist\nDaoist\nConfucian\nSikhi", inline: true},
             { name: "Other:", value: "Unitarian Universalist\nIrreligious\nPagan\nGnostic\nPanentheist\nOther\n\n**To see available denomination roles do \`.denominations\`**", inline: true}
             ]
           }
@@ -671,7 +671,7 @@ bot.on("message", (message) => {
         }
 });
 
-/*bot.on('ready', () => {
+bot.on('ready', () => {
     var j = schedule.scheduleJob({hour: 21, minute: 38}, function() {
         var book = Math.floor(Math.random() * 8);
         const rod = bot.guilds.get('359925003359354890')
@@ -705,7 +705,7 @@ bot.on("message", (message) => {
             })
             daily.send(`@everyone feel free to discuss today's passage in ${bible.channels[1]}, ${bible.channels[2]} or ${bible.channels[3]} 😄`)
       });
-});*/
+});
 
 bot.on('guildMemberAdd', member => {
     const unverified = member.guild.channels.find('name', 'unverified');
@@ -738,7 +738,5 @@ bot.on('guildMemberRemove', member => {
     });
 });
 
-
-console.log("Bot on.")
 //Bot login Token.
 bot.login(process.env.BOT_TOKEN);
