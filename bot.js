@@ -2,7 +2,7 @@
 const Discord = require("discord.js");
 const fs = require("fs");
 const ms = require("ms");
-/*const schedule = require("Node-Schedule");*/
+const schedule = require("Node-Schedule");
 const bot = new Discord.Client();
 const prefix = ".";
 
@@ -85,7 +85,7 @@ bot.on("message", (message) => {
         const general = message.member.guild.channels.find('name', 'general');
         const unverified = message.guild.roles.find("name", "Unverified");
         message.member.removeRole(unverified).then(() => {
-            general.send(`Welcome, ${message.member.user}!\nIf you'd like to add roles type \`.roles\` or \`.denominations\` in <#455112761769459723>.`);
+            general.send(`Welcome, ${message.member.user}!\nIf you'd like to add roles type \`.religions\` or \`.denominations\` in <#455112761769459723>.`);
         });
     }
     if (message.content.startsWith(prefix + "iamn")) {
@@ -738,5 +738,7 @@ bot.on('guildMemberRemove', member => {
     });
 });
 
+
+console.log("Bot on.")
 //Bot login Token.
 bot.login(process.env.BOT_TOKEN);
