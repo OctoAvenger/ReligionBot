@@ -52,7 +52,7 @@ bot.on("message", (message) => {
             fields: [
             { name: "Christian (1):", value: "Catholic\nOrthodox\nAnglican\nBaptist\nLutheran\nMethodist", inline: true},
             { name: "Christian (2):", value: "Reformed\nLatter-Day Saint\nJehovah's Witness\nMessianic Jew\nCongregational", inline: true},
-            { name: "Muslim:", value: "Sunni\nShia\nKharijite\nSufi", inline: true},
+            { name: "Muslim:", value: "Sunni\nShia\nQuranist\nSufi", inline: true},
             { name: "Irreligious:", value: "Atheist\nAgnostic\nIgnostic", inline: true},
             { name: "Hindu:", value: "Vaishnavi\nShaivi", inline: true},
             { name: "Buddhist:", value: "Theravada\nMahayana\nVajrayana", inline: true},
