@@ -343,7 +343,7 @@ bot.on("message", (message) => {
 });
 
 bot.on('ready', () => {
-    var j = schedule.scheduleJob({hour: 12, minute: 15}, function() {
+    var j = schedule.scheduleJob({hour: 3, minute: 00}, 'Asia/Shanghai', function() {
         const rod = bot.guilds.get('359925003359354890')
         const daily = rod.channels.find('name', 'daily-passage')
         var passageNum = Math.floor(Math.random() * 6);
