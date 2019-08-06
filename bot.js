@@ -450,9 +450,6 @@ bot.on("message", (message) => {
         message.reply('That\'s nice but who do you want to ban?');
       }
     }
-    if (lowerCaseMessage.startsWith(prefix + 'test')) {
-        
-});
 
 bot.on('ready', () => {
     var j = schedule.scheduleJob({hour: 11, minute: 00}, function() {
@@ -485,10 +482,10 @@ bot.on('ready', () => {
                 passage: {
                     passageName: ["Qur'an 2:154", "Qur'an 3:31", "Quran 3:101", "Qur'an 55:60", "Qur'an 64:11"],
                     passageText: ["O you who believe, seek help through patience and prayer. Surely, Allah is with those who are patient.",
-                                  "Say, (O Muhammad, to mankind): If ye love Allah, follow me; Allah will love you and forgive you your sins. Allah is Forgiving, Merciful.",
-                                  "And whoever holds firmly to Allah has [indeed] been guided to a straight path."
+                                  "Say, [O Muhammad, to mankind]: If ye love Allah, follow me; Allah will love you and forgive you your sins. Allah is Forgiving, Merciful.",
+                                  "And whoever holds firmly to Allah has [indeed] been guided to a straight path.",
                                   "Is there any reward for good other than good?",
-                                  "No disaster strikes except by permission of Allah . And whoever believes in Allah – He will guide his heart. And Allah is Knowing of all things.",
+                                  "No disaster strikes except by permission of Allah . And whoever believes in Allah – He will guide his heart. And Allah is Knowing of all things."
                                ]
                     },
                 channels: "<#455141658410090498>, <#455111412965179402> or <#455111030314369024>"
@@ -622,11 +619,10 @@ bot.on('ready', () => {
                 { name: book[bookNum].passage.passageName[passageNum], value: book[bookNum].passage.passageText[passageNum], inline: true},
                 ]
             }
-            })
+        })
             daily.send(`@everyone feel free to discuss today's passage in ${book[bookNum].channels} 😄`)
-        }
-      });
-});
+    }
+    );
 
 bot.on('guildMemberAdd', member => {
     const unverified = member.guild.channels.find('name', 'unverified');
