@@ -1,3 +1,4 @@
+
 //Defines bot/prefix and languages used.
 const Discord = require("discord.js");
 const fs = require("fs");
@@ -18,9 +19,8 @@ bot.on('ready', () => {
 
 //Message Commands ReligionBot can proform.
 bot.on("message", (message) => {
-    const lowerCaseMessage = message.content.toLowerCase()
     //Help message. Useful for new users.
-    if (lowerCaseMessage == prefix + "help") {
+    if (message.content == prefix + "help") {
         message.channel.send({embed: {
             author: {
                 name: `My commands are as follows:`,
@@ -28,13 +28,13 @@ bot.on("message", (message) => {
               },
             color: 0xF1DA75,
             fields: [
-            { name: `General Commands:`, value: ".religions - displays all availible religious roles\n.denominations - displays all availible religious denomination roles.\n.iam - `.iam [role]`\n.iamn - `.iamn [role]`\n.suggest - `.suggest [suggestion]`\n.wiki - `.wiki [page]`", inline: true},
+            { name: `General Commands:`, value: ".religions - displays all availible religious roles\n.denominations - displays all availible religious denomination roles.\n.iam - `.iam [role]`\n.iamn - `.iamn [role]`\n.suggest - `.suggest [suggestion]`", inline: true},
             { name: `Moderation Commads:`, value: ".ar - `.ar @[user] [role]`\n.rr - `.rr @[user] [role]`\n.delete - `.delete [number]`\n.mute - `.mute @[user] [reason]`\n.unmute - `.unmute @[user] [reason]`\n.inspect - `.inspect @[user] [reason]`\n.forgive - `.forgive @[user] [reason]`\n.kick - `.kick @[user] [reason]`\n.ban - `.ban @[user] [reason]`", inline: true},
             ]
           }
         });
     }
-    if (lowerCaseMessage == prefix + "religions") {
+    if (message.content == prefix + "religions") {
         message.channel.send({embed: {
             title: "Assignable Roles:\n\n",
             color: 0xF1DA75,
@@ -46,13 +46,13 @@ bot.on("message", (message) => {
           }
         });
     }
-    if (lowerCaseMessage == prefix + "denominations") {
+    if (message.content == prefix + "denominations") {
         message.channel.send({embed: {
             title: "Assignable Roles:\n\n",
             color: 0xF1DA75,
             fields: [
             { name: "Christian (1):", value: "Catholic\nOrthodox\nAnglican\nBaptist\nLutheran\nMethodist", inline: true},
-            { name: "Christian (2):", value: "Reformed\nLatter-day Saint\nJehovah's Witness\nMessianic Jew\nCongregational", inline: true},
+            { name: "Christian (2):", value: "Reformed\nLatter-Day Saint\nJehovah's Witness\nMessianic Jew\nCongregational", inline: true},
             { name: "Muslim:", value: "Sunni\nShia\nQuranist\nSufi", inline: true},
             { name: "Irreligious:", value: "Atheist\nAgnostic\nIgnostic", inline: true},
             { name: "Hindu:", value: "Vaishnavi\nShaivi", inline: true},
@@ -62,7 +62,7 @@ bot.on("message", (message) => {
           }
         });
     }
-    if (lowerCaseMessage.startsWith(prefix + "iam")) {
+    if (message.content.startsWith(prefix + "iam")) {
         const logs = message.member.guild.channels.find('name', 'role-log');
         let role = message.guild.roles.find("name", message.content.slice(5, message.content.length));
         message.member.addRole(role).then(() => {
@@ -82,14 +82,14 @@ bot.on("message", (message) => {
             }
         });
     }
-    if (lowerCaseMessage == prefix + "done" && message.channel.name == 'unverified' && message.member.roles.size > 2) {
+    if (message.content == prefix + "done" && message.channel.name == 'unverified' && message.member.roles.size > 2) {
         const general = message.member.guild.channels.find('name', 'general');
         const unverified = message.guild.roles.find("name", "Unverified");
         message.member.removeRole(unverified).then(() => {
             general.send(`Welcome, ${message.member.user}!\nIf you'd like to add roles type \`.religions\` or \`.denominations\` in <#455112761769459723>.`);
         });
     }
-    if (lowerCaseMessage.startsWith(prefix + "iamn")) {
+    if (message.content.startsWith(prefix + "iamn")) {
         const logs = message.member.guild.channels.find('name', 'role-log');
         let role = message.guild.roles.find("name", message.content.slice(6, message.content.length));
         message.member.removeRole(role).then(() => {
@@ -104,12 +104,12 @@ bot.on("message", (message) => {
                 }
             });
             }).catch(err => {
-            if (!lowerCaseMessage.startsWith(prefix + "iamnot")) {
+            if (!message.content.startsWith(prefix + "iamnot")) {
                 message.reply(`I was unable to remove \`${message.content.slice(6, message.content.length)}\` role. Please make sure that role exists and that you have permission to remove it.`);
             }
         });
     }
-    if (lowerCaseMessage.startsWith(prefix + "iamnot")) {
+    if (message.content.startsWith(prefix + "iamnot")) {
         const logs = message.member.guild.channels.find('name', 'role-log');
         let role = message.guild.roles.find("name", message.content.slice(8, message.content.length));
         message.member.removeRole(role).then(() => {
@@ -127,7 +127,7 @@ bot.on("message", (message) => {
             message.reply(`I was unable to remove \`${message.content.slice(8, message.content.length)}\` role. Please make sure that role exists and that you have permission to remove it.`);
         });
     }
-    if (lowerCaseMessage.startsWith(prefix + 'suggest')) {
+    if (message.content.startsWith(prefix + 'suggest')) {
         message.delete(1000);
         let embed = {embed: {
             author: {
@@ -147,12 +147,8 @@ bot.on("message", (message) => {
             .then(sentEmbed.react("👎"))
         })
     }
-    if (lowerCaseMessage.startsWith(prefix + "wiki")) {
-        const query = message.content.slice(6, message.content.length).replace(/ /g, "_");
-        message.channel.send(`https://en.wikipedia.org/wiki/${query}`);
-    }
     //Moderation commands
-    if (lowerCaseMessage.startsWith(prefix + 'delete')) {
+    if (message.content.startsWith(prefix + 'delete')) {
         if(!message.member.roles.some(r=>["Administrator", "Moderator"].includes(r.name)))
         return message.reply("Sorry, you don't have permissions to use this!");
             const logs = message.member.guild.channels.find('name', 'delete-log');
@@ -172,7 +168,7 @@ bot.on("message", (message) => {
             message.reply(`I was unable to delete \`${message.content.slice(8, message.content.length)}\` messages. \`${err}\``);
         });
       }
-    if (lowerCaseMessage.startsWith(prefix + "ar")) {
+    if (message.content.startsWith(prefix + "ar")) {
         const user = message.mentions.users.first();
         if(!message.member.roles.some(r=>["Administrator", "Moderator"].includes(r.name)))
             return message.reply("Sorry, you don't have permissions to use this!");
@@ -203,7 +199,7 @@ bot.on("message", (message) => {
                 message.reply('That\'s nice but who do you want to add the role to?');
             }
     }
-    if (lowerCaseMessage.startsWith(prefix + "rr")) {
+    if (message.content.startsWith(prefix + "rr")) {
         const user = message.mentions.users.first();
         if(!message.member.roles.some(r=>["Administrator", "Moderator"].includes(r.name)))
             return message.reply("Sorry, you don't have permissions to use this!");
@@ -234,7 +230,7 @@ bot.on("message", (message) => {
                 message.reply('That\'s nice but who do you want to take the role from?');
             }
     }
-    if (lowerCaseMessage.startsWith(prefix + 'unmute')) {
+    if (message.content.startsWith(prefix + 'unmute')) {
         const user = message.mentions.users.first();
         if(!message.member.roles.some(r=>["Administrator", "Moderator"].includes(r.name)))
         return message.reply("Sorry, you don't have permissions to use this!");
@@ -270,7 +266,7 @@ bot.on("message", (message) => {
         message.reply('That\'s nice but who do you want to unmute?');
     }
     }
-    if (lowerCaseMessage.startsWith(prefix + 'mute')) {
+    if (message.content.startsWith(prefix + 'mute')) {
         const user = message.mentions.users.first();
         if(!message.member.roles.some(r=>["Administrator", "Moderator"].includes(r.name)))
         return message.reply("Sorry, you don't have permissions to use this!");
@@ -306,7 +302,7 @@ bot.on("message", (message) => {
         message.reply('That\'s nice but who do you want to mute?');
     }
     }
-    if (lowerCaseMessage.startsWith(prefix + 'inspect')) {
+    if (message.content.startsWith(prefix + 'inspect')) {
         const user = message.mentions.users.first();
         if(!message.member.roles.some(r=>["Administrator", "Moderator"].includes(r.name)))
         return message.reply("Sorry, you don't have permissions to use this!");
@@ -344,115 +340,10 @@ bot.on("message", (message) => {
         message.reply('That\'s nice but who do you want to timeout?');
     }
     }
-    if (lowerCaseMessage.startsWith(prefix + 'forgive')) {
-        const user = message.mentions.users.first();
-        if(!message.member.roles.some(r=>["Administrator", "Moderator"].includes(r.name)))
-        return message.reply("Sorry, you don't have permissions to use this!");
-        if (user) {
-            const member = message.guild.member(user);
-            const logs = member.guild.channels.find('name', 'mod-log');
-            if (member) {
-                let timeout = message.guild.roles.find("name", "Timeout");
-                member.removeRole(timeout).then(() => {
-                message.reply(`Successfully forgave ${user}`);
-                if (message.content.slice(12 + user.id.length, message.content.length) < 0) {
-                    reason = "None given";
-                }
-                else {
-                    reason = message.content.slice(12 + user.id.length, message.content.length);
-                }
-                logs.send({embed: {
-                    title: "User Forgiven:\n\n",
-                    color: 0x5a5a5a,
-                    fields: [
-                        { name: "Username:", value: `${member.user.username}#${member.user.discriminator}\n\nUser ID: ${member.id}`, inline: true},
-                        { name: "Reason:", value: reason, inline: true},
-                    ]
-                    }
-                });
-                }).catch(err => {
-                message.reply('I was unable to forgive the member. `' + err + '`');
-            });
-        }   else {
-        message.reply('That user doesn\'t exist!');
-        }
-    } else {
-        message.reply('That\'s nice but who do you want to forgive?');
-    }
-    }
-    if (lowerCaseMessage.startsWith(prefix + 'kick')) {
-        const user = message.mentions.users.first();
-        if(!message.member.roles.some(r=>["Administrator", "Moderator"].includes(r.name)))
-        return message.reply("Sorry, you don't have permissions to use this!");
-        if (user) {
-            const member = message.guild.member(user);
-            const logs = member.guild.channels.find('name', 'mod-log');
-            if (member) {
-                member.kick(message.content).then(() => {
-                message.reply(`Successfully kicked ${user}`);
-                if (message.content.slice(10 + user.id.length, message.content.length) < 0) {
-                    reason = "None given";
-                }
-                else {
-                    reason = message.content.slice(10 + user.id.length, message.content.length);
-                }
-                logs.send({embed: {
-                    title: "User kicked:\n\n",
-                    color: 0xaa3333,
-                    fields: [
-                        { name: "Username:", value: `${member.user.username}#${member.user.discriminator}\n\nUser ID: ${member.id}`, inline: true},
-                        { name: "Reason:", value: reason, inline: true},
-                    ]
-                    }
-                });
-                }).catch(err => {
-                message.reply('I was unable to kick the member. `' + err + '`');
-            });
-        }   else {
-          message.reply('That user doesn\'t exist!');
-        }
-      } else {
-        message.reply('That\'s nice but who do you want to kick?');
-      }
-    }
-    if (lowerCaseMessage.startsWith(prefix + 'ban')) {
-        const user = message.mentions.users.first();
-        if(!message.member.roles.some(r=>"Administrator".includes(r.name)))
-        return message.reply("Sorry, you don't have permissions to use this!");
-        if (user) {
-            const member = message.guild.member(user);
-            const logs = member.guild.channels.find('name', 'mod-log');
-            if (member) {
-                member.ban(`I don\'t know ask the moderator that banned him.`).then(() => {
-                message.reply(`Successfully banned ${user}`);
-                if (message.content.slice(9 + user.id.length, message.content.length) < 0) {
-                    reason = "None given";
-                }
-                else {
-                    reason = message.content.slice(9 + user.id.length, message.content.length);
-                }
-                logs.send({embed: {
-                    title: "User banned:\n\n",
-                    color: 0xaa3333,
-                    fields: [
-                        { name: "Username:", value: `${member.user.username}#${member.user.discriminator}\n\nUser ID: ${member.id}`, inline: true},
-                        { name: "Reason:", value: reason, inline: true},
-                    ]
-                    }
-                });
-                }).catch(err => {
-                message.reply('I was unable to ban the member. `' + err + '`');
-            });
-        }   else {
-          message.reply('That user doesn\'t exist!');
-        }
-      } else {
-        message.reply('That\'s nice but who do you want to ban?');
-      }
-    }
 });
+
 bot.on('ready', () => {
-    var j = schedule.scheduleJob({hour: 11, minute: 00}, function() {
+    var j = schedule.scheduleJob({hour: 12, minute: 15}, function() {
         const rod = bot.guilds.get('359925003359354890')
         const daily = rod.channels.find('name', 'daily-passage')
         var passageNum = Math.floor(Math.random() * 6);
@@ -621,9 +512,9 @@ bot.on('ready', () => {
             }
         })
             daily.send(`@everyone feel free to discuss today's passage in ${book[bookNum].channels} 😄`)
-    }
-    );
+      });
 });
+
 bot.on('guildMemberAdd', member => {
     const unverified = member.guild.channels.find('name', 'unverified');
     const logs = member.guild.channels.find('name', 'join-log')
@@ -654,7 +545,6 @@ bot.on('guildMemberRemove', member => {
         }
     });
 });
-
 
 //Bot login Token.
 bot.login(process.env.BOT_TOKEN);
