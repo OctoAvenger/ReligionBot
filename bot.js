@@ -18,8 +18,9 @@ bot.on('ready', () => {
 
 //Message Commands ReligionBot can proform.
 bot.on("message", (message) => {
+    const lowerCaseMessage = message.content.toLowerCase()
     //Help message. Useful for new users.
-    if (message.content == prefix + "help") {
+    if (lowerCaseMessage == prefix + "help") {
         message.channel.send({embed: {
             author: {
                 name: `My commands are as follows:`,
@@ -27,13 +28,13 @@ bot.on("message", (message) => {
               },
             color: 0xF1DA75,
             fields: [
-            { name: `General Commands:`, value: ".religions - displays all availible religious roles\n.denominations - displays all availible religious denomination roles.\n.iam - `.iam [role]`\n.iamn - `.iamn [role]`\n.suggest - `.suggest [suggestion]`", inline: true},
+            { name: `General Commands:`, value: ".religions - displays all availible religious roles\n.denominations - displays all availible religious denomination roles.\n.iam - `.iam [role]`\n.iamn - `.iamn [role]`\n.suggest - `.suggest [suggestion]`\n.wiki - `.wiki [page]`", inline: true},
             { name: `Moderation Commads:`, value: ".ar - `.ar @[user] [role]`\n.rr - `.rr @[user] [role]`\n.delete - `.delete [number]`\n.mute - `.mute @[user] [reason]`\n.unmute - `.unmute @[user] [reason]`\n.inspect - `.inspect @[user] [reason]`\n.forgive - `.forgive @[user] [reason]`\n.kick - `.kick @[user] [reason]`\n.ban - `.ban @[user] [reason]`", inline: true},
             ]
           }
         });
     }
-    if (message.content == prefix + "religions") {
+    if (lowerCaseMessage == prefix + "religions") {
         message.channel.send({embed: {
             title: "Assignable Roles:\n\n",
             color: 0xF1DA75,
@@ -45,13 +46,13 @@ bot.on("message", (message) => {
           }
         });
     }
-    if (message.content == prefix + "denominations") {
+    if (lowerCaseMessage == prefix + "denominations") {
         message.channel.send({embed: {
             title: "Assignable Roles:\n\n",
             color: 0xF1DA75,
             fields: [
             { name: "Christian (1):", value: "Catholic\nOrthodox\nAnglican\nBaptist\nLutheran\nMethodist", inline: true},
-            { name: "Christian (2):", value: "Reformed\nLatter-Day Saint\nJehovah's Witness\nMessianic Jew\nCongregational", inline: true},
+            { name: "Christian (2):", value: "Reformed\nLatter-day Saint\nJehovah's Witness\nMessianic Jew\nCongregational", inline: true},
             { name: "Muslim:", value: "Sunni\nShia\nQuranist\nSufi", inline: true},
             { name: "Irreligious:", value: "Atheist\nAgnostic\nIgnostic", inline: true},
             { name: "Hindu:", value: "Vaishnavi\nShaivi", inline: true},
@@ -61,7 +62,7 @@ bot.on("message", (message) => {
           }
         });
     }
-    if (message.content.startsWith(prefix + "iam")) {
+    if (lowerCaseMessage.startsWith(prefix + "iam")) {
         const logs = message.member.guild.channels.find('name', 'role-log');
         let role = message.guild.roles.find("name", message.content.slice(5, message.content.length));
         message.member.addRole(role).then(() => {
@@ -81,14 +82,14 @@ bot.on("message", (message) => {
             }
         });
     }
-    if (message.content == prefix + "done" && message.channel.name == 'unverified' && message.member.roles.size > 2) {
+    if (lowerCaseMessage == prefix + "done" && message.channel.name == 'unverified' && message.member.roles.size > 2) {
         const general = message.member.guild.channels.find('name', 'general');
         const unverified = message.guild.roles.find("name", "Unverified");
         message.member.removeRole(unverified).then(() => {
             general.send(`Welcome, ${message.member.user}!\nIf you'd like to add roles type \`.religions\` or \`.denominations\` in <#455112761769459723>.`);
         });
     }
-    if (message.content.startsWith(prefix + "iamn")) {
+    if (lowerCaseMessage.startsWith(prefix + "iamn")) {
         const logs = message.member.guild.channels.find('name', 'role-log');
         let role = message.guild.roles.find("name", message.content.slice(6, message.content.length));
         message.member.removeRole(role).then(() => {
@@ -103,12 +104,12 @@ bot.on("message", (message) => {
                 }
             });
             }).catch(err => {
-            if (!message.content.startsWith(prefix + "iamnot")) {
+            if (!lowerCaseMessage.startsWith(prefix + "iamnot")) {
                 message.reply(`I was unable to remove \`${message.content.slice(6, message.content.length)}\` role. Please make sure that role exists and that you have permission to remove it.`);
             }
         });
     }
-    if (message.content.startsWith(prefix + "iamnot")) {
+    if (lowerCaseMessage.startsWith(prefix + "iamnot")) {
         const logs = message.member.guild.channels.find('name', 'role-log');
         let role = message.guild.roles.find("name", message.content.slice(8, message.content.length));
         message.member.removeRole(role).then(() => {
@@ -126,7 +127,7 @@ bot.on("message", (message) => {
             message.reply(`I was unable to remove \`${message.content.slice(8, message.content.length)}\` role. Please make sure that role exists and that you have permission to remove it.`);
         });
     }
-    if (message.content.startsWith(prefix + 'suggest')) {
+    if (lowerCaseMessage.startsWith(prefix + 'suggest')) {
         message.delete(1000);
         let embed = {embed: {
             author: {
@@ -146,8 +147,12 @@ bot.on("message", (message) => {
             .then(sentEmbed.react("👎"))
         })
     }
+    if (lowerCaseMessage.startsWith(prefix + "wiki")) {
+        const query = message.content.slice(6, message.content.length).replace(/ /g, "_");
+        message.channel.send(`https://en.wikipedia.org/wiki/${query}`);
+    }
     //Moderation commands
-    if (message.content.startsWith(prefix + 'delete')) {
+    if (lowerCaseMessage.startsWith(prefix + 'delete')) {
         if(!message.member.roles.some(r=>["Administrator", "Moderator"].includes(r.name)))
         return message.reply("Sorry, you don't have permissions to use this!");
             const logs = message.member.guild.channels.find('name', 'delete-log');
@@ -167,7 +172,7 @@ bot.on("message", (message) => {
             message.reply(`I was unable to delete \`${message.content.slice(8, message.content.length)}\` messages. \`${err}\``);
         });
       }
-    if (message.content.startsWith(prefix + "ar")) {
+    if (lowerCaseMessage.startsWith(prefix + "ar")) {
         const user = message.mentions.users.first();
         if(!message.member.roles.some(r=>["Administrator", "Moderator"].includes(r.name)))
             return message.reply("Sorry, you don't have permissions to use this!");
@@ -198,7 +203,7 @@ bot.on("message", (message) => {
                 message.reply('That\'s nice but who do you want to add the role to?');
             }
     }
-    if (message.content.startsWith(prefix + "rr")) {
+    if (lowerCaseMessage.startsWith(prefix + "rr")) {
         const user = message.mentions.users.first();
         if(!message.member.roles.some(r=>["Administrator", "Moderator"].includes(r.name)))
             return message.reply("Sorry, you don't have permissions to use this!");
@@ -229,7 +234,7 @@ bot.on("message", (message) => {
                 message.reply('That\'s nice but who do you want to take the role from?');
             }
     }
-    if (message.content.startsWith(prefix + 'unmute')) {
+    if (lowerCaseMessage.startsWith(prefix + 'unmute')) {
         const user = message.mentions.users.first();
         if(!message.member.roles.some(r=>["Administrator", "Moderator"].includes(r.name)))
         return message.reply("Sorry, you don't have permissions to use this!");
@@ -265,7 +270,7 @@ bot.on("message", (message) => {
         message.reply('That\'s nice but who do you want to unmute?');
     }
     }
-    if (message.content.startsWith(prefix + 'mute')) {
+    if (lowerCaseMessage.startsWith(prefix + 'mute')) {
         const user = message.mentions.users.first();
         if(!message.member.roles.some(r=>["Administrator", "Moderator"].includes(r.name)))
         return message.reply("Sorry, you don't have permissions to use this!");
@@ -301,7 +306,7 @@ bot.on("message", (message) => {
         message.reply('That\'s nice but who do you want to mute?');
     }
     }
-    if (message.content.startsWith(prefix + 'inspect')) {
+    if (lowerCaseMessage.startsWith(prefix + 'inspect')) {
         const user = message.mentions.users.first();
         if(!message.member.roles.some(r=>["Administrator", "Moderator"].includes(r.name)))
         return message.reply("Sorry, you don't have permissions to use this!");
@@ -339,7 +344,7 @@ bot.on("message", (message) => {
         message.reply('That\'s nice but who do you want to timeout?');
     }
     }
-    if (message.content.startsWith(prefix + 'forgive')) {
+    if (lowerCaseMessage.startsWith(prefix + 'forgive')) {
         const user = message.mentions.users.first();
         if(!message.member.roles.some(r=>["Administrator", "Moderator"].includes(r.name)))
         return message.reply("Sorry, you don't have permissions to use this!");
@@ -375,7 +380,7 @@ bot.on("message", (message) => {
         message.reply('That\'s nice but who do you want to forgive?');
     }
     }
-    if (message.content.startsWith(prefix + 'kick')) {
+    if (lowerCaseMessage.startsWith(prefix + 'kick')) {
         const user = message.mentions.users.first();
         if(!message.member.roles.some(r=>["Administrator", "Moderator"].includes(r.name)))
         return message.reply("Sorry, you don't have permissions to use this!");
@@ -410,7 +415,7 @@ bot.on("message", (message) => {
         message.reply('That\'s nice but who do you want to kick?');
       }
     }
-    if (message.content.startsWith(prefix + 'ban')) {
+    if (lowerCaseMessage.startsWith(prefix + 'ban')) {
         const user = message.mentions.users.first();
         if(!message.member.roles.some(r=>"Administrator".includes(r.name)))
         return message.reply("Sorry, you don't have permissions to use this!");
@@ -445,11 +450,16 @@ bot.on("message", (message) => {
         message.reply('That\'s nice but who do you want to ban?');
       }
     }
-    if (message.content.startsWith(prefix + 'test')) {
+    if (lowerCaseMessage.startsWith(prefix + 'test')) {
+        
+});
+
+bot.on('ready', () => {
+    var j = schedule.scheduleJob({hour: 10, minute: 45}, function() {
         const rod = bot.guilds.get('359925003359354890')
         const daily = rod.channels.find('name', 'daily-passage')
         var passageNum = Math.floor(Math.random() * 6);
-        var bookNum = Math.floor(Math.random() * 4);
+        var bookNum = Math.floor(Math.random() * 6);
         book = [
             //Christian
             nt = {
@@ -469,26 +479,16 @@ bot.on("message", (message) => {
             },
             //Muslim
             quran = {
-                name: "Qur'an",
+                name: "Holy Qur'an:",
                 icon: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQU4wAqX_pIY_MmjU_3O_zIKQ_Moz0z1O4-NGWY7fvr0sovnNgF",
                 colour: 0x3f9447,
                 passage: {
-                    passageName: ["Qur'an 55:60", "Qur'an 64:11", "Qur'an 3:31", "Quran 3:101"],
-                    passageText: ["Is there any reward for good other than good?",
-                                  "No disaster strikes except by permission of Allah . And whoever believes in Allah – He will guide his heart. And Allah is Knowing of all things.",
+                    passageName: ["Qur'an 2:154", "Qur'an 3:31", "Quran 3:101", "Qur'an 55:60", "Qur'an 64:11"],
+                    passageText: ["O you who believe, seek help through patience and prayer. Surely, Allah is with those who are patient.",
                                   "Say, (O Muhammad, to mankind): If ye love Allah, follow me; Allah will love you and forgive you your sins. Allah is Forgiving, Merciful.",
-                                  "And whoever holds firmly to Allah has [indeed] been guided to a straight path.",
-                               ]
-                    },
-                channels: "<#455141658410090498>, <#455111412965179402> or <#455111030314369024>"
-            },
-            hadith = {
-                name: "Hadith",
-                icon: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQU4wAqX_pIY_MmjU_3O_zIKQ_Moz0z1O4-NGWY7fvr0sovnNgF",
-                colour: 0x3f9447,
-                passage: {
-                    passageName: ["Sahih al-Bukhari 73:135"],
-                    passageText: ["The strong person is not the good wrestler. Rather,the strong person is the one who controls himself when he is angry."
+                                  "And whoever holds firmly to Allah has [indeed] been guided to a straight path."
+                                  "Is there any reward for good other than good?",
+                                  "No disaster strikes except by permission of Allah . And whoever believes in Allah – He will guide his heart. And Allah is Knowing of all things.",
                                ]
                     },
                 channels: "<#455141658410090498>, <#455111412965179402> or <#455111030314369024>"
@@ -509,9 +509,9 @@ bot.on("message", (message) => {
                 },
                 channels: "<#455111095321886721> or <#455111030314369024>"
             },
-            //Hindu
-            hindu = {
-                name: "",
+            /*//Hindu
+            vedas = {
+                name: "The Vedas:",
                 icon: "",
                 colour: 0xe78810,
                 passage : {
@@ -519,10 +519,10 @@ bot.on("message", (message) => {
                     passageText: []
                 },
                 channels: ""
-            },
-            //Buddhist
-            buddhist = {
-                name: "",
+            },*/
+            /*//Buddhist
+            dhammapada = {
+                name: "Dhammapada:",
                 icon: "",
                 colour: 0xe8ec3d,
                 passage : {
@@ -530,10 +530,10 @@ bot.on("message", (message) => {
                     passageText: []
                 },
                 channels: ""
-            },
-            //Daoist
-            daoist = {
-                name: "",
+            },*/
+            /*//Daoist
+            dao_de_ching = {
+                name: "Dao De Ching:",
                 icon: "",
                 colour: 0x33e0e2,
                 passage : {
@@ -541,74 +541,40 @@ bot.on("message", (message) => {
                     passageText: []
                 },
                 channels: ""
-            },
+            },*/
             //LDS
             bom = {
-                name: "Book of Mormon",
+                name: "Book of Mormon:",
                 icon: "",
                 colour: 0xcf9b17,
                 passage : {
                     passageName: ["1 Nephi 3:7", "2 Nephi 2:25", "2 Nephi 2:27", "2 Nephi 25:23, 26", "2 Nephi 26:33", "2 Nephi 28:7–9", "2 Nephi 31:19-20", "2 Nephi 32:8–9", "Mosiah 2:17", "Mosiah 3:19", "Mosiah 4:30", "Alma 32:21", "Alma 37:35", "Alma 39:9", "Helaman 5:12", "3 Nephi 12:48", "3 Nephi 18:15, 20-21", "Ether 12:6", "Ether 12:27", "Moroni 7:41", "Moroni 45, 47-48", "Moroni 10:4-5"],
-                    passageText: ["And it came to pass that I, Nephi, said unto my father: I will go and do the things which the Lord hath commanded, for I know that the Lord giveth no commandments unto the children of men, save he shall prepare a way for them that they may accomplish the thing which he commandeth them.",
-                                  "Adam fell that men might be; and men are, that they might have joy.",
-                                  "Wherefore, men are free according to the flesh; and all things are given them which are expedient unto man. And they are free to choose liberty and eternal life, through the great Mediator of all men, or to choose captivity and death, according to the captivity and power of the devil; for he seeketh that all men might be miserable like unto himself.",
-                                  "For we labor diligently to write, to persuade our children, and also our brethren, to believe in Christ, and to be reconciled to God; for we know that it is by grace that we are saved, after all we can do. And we talk of Christ, we rejoice in Christ, we preach of Christ, we prophesy of Christ, and we write according to our prophecies, that our children may know to what source they may look for a remission of their sins.",
+                    passageText: ["Wherefore, men are free according to the flesh; and all things are given them which are expedient unto man. And they are free to choose liberty and eternal life, through the great Mediator of all men, or to choose captivity and death, according to the captivity and power of the devil; for he seeketh that all men might be miserable like unto himself.",
                                   "For none of these iniquities come of the Lord; for he doeth that which is good among the children of men; and he doeth nothing save it be plain unto the children of men; and he inviteth them all to come unto him and partake of his goodness; and he denieth none that come unto him, black and white, bond and free, male and female; and he remembereth the heathen; and all are alike unto God, both Jew and Gentile.",
-                                  "Yea, and there shall be many which shall say: Eat, drink, and be merry, for tomorrow we die; and it shall be well with us. And there shall also be many which shall say: Eat, drink, and be merry; nevertheless, fear God—he will justify in committing a little sin; yea, lie a little, take the advantage of one because of his words, dig a pit for thy neighbor; there is no harm in this; and do all these things, for tomorrow we die; and if it so be that we are guilty, God will beat us with a few stripes, and at last we shall be saved in the kingdom of God. Yea, and there shall be many which shall teach after this manner, false and vain and foolish doctrines, and shall be puffed up in their hearts, and shall seek deep to hide their counsels from the Lord; and their works shall be in the dark.",
-                                  "And now, my beloved brethren, after ye have gotten into this strait and narrow path, I would ask if all is done? Behold, I say unto you, Nay; for ye have not come thus far save it were by the word of Christ with unshaken faith in him, relying wholly upon the merits of him who is mighty to save. Wherefore, ye must press forward with a steadfastness in Christ, having a perfect brightness of hope, and a love of God and of all men. Wherefore, if ye shall press forward, feasting upon the word of Christ, and endure to the end, behold, thus saith the Father: Ye shall have eternal life.",
-                                  "And now, my beloved brethren, I perceive that ye ponder still in your hearts; and it grieveth me that I must speak concerning this thing. For if ye would hearken unto the Spirit which teacheth a man to pray, ye would know that ye must pray; for the evil spirit teacheth not a man to pray, but teacheth him that he must not pray. But behold, I say unto you that ye must pray always, and not faint; that ye must not perform any thing unto the Lord save in the first place ye shall pray unto the Father in the name of Christ, that he will consecrate thy performance unto thee, that thy performance may be for the welfare of thy soul.",
-                                  "And behold, I tell you these things that ye may learn wisdom; that ye may learn that when ye are in the service of your fellow beings ye are only in the service of your God.",
-                                  "For the natural man is an enemy to God, and has been from the fall of Adam, and will be, forever and ever, unless he yields to the enticings of the Holy Spirit, and putteth off the natural man and becometh a saint through the atonement of Christ the Lord, and becometh as a child, submissive, meek, humble, patient, full of love, willing to submit to all things which the Lord seeth fit to inflict upon him, even as a child doth submit to his father.",
-                                  "But this much I can tell you, that if ye do not watch yourselves, and your thoughts, and your words, and your deeds, and observe the commandments of God, and continue in the faith of what ye have heard concerning the coming of our Lord, even unto the end of your lives, ye must perish. And now, O man, remember, and perish not.",
                                   "And now as I said concerning faith—faith is not to have a perfect knowledge of things; therefore if ye have faith ye hope for things which are not seen, which are true.",
-                                  "Now my son, I would that ye should repent and forsake your sins, and go no more after the lusts of your eyes, but cross yourself in all these things; for except ye do this ye can in nowise inherit the kingdom of God. Oh, remember, and take it upon you, and cross yourself in these things.",
                                   "And now, my sons, remember, remember that it is upon the rock of our Redeemer, who is Christ, the Son of God, that ye must build your foundation; that when the devil shall send forth his mighty winds, yea, his shafts in the whirlwind, yea, when all his hail and his mighty storm shall beat upon you, it shall have no power over you to drag you down to the gulf of misery and endless wo, because of the rock upon which ye are built, which is a sure foundation, a foundation whereon if men build they cannot fall.",
-                                  "Therefore I would that ye should be perfect even as I, or your Father who is in heaven is perfect.",
-                                  "Verily, verily, I say unto you, ye must watch and pray always, lest ye be tempted by the devil, and ye be led away captive by him. And whatsoever ye shall ask the Father in my name, which is right, believing that ye shall receive, behold it shall be given unto you. Pray in your families unto the Father, always in my name, that your wives and your children may be blessed.",
-                                  "And now, I, Moroni, would speak somewhat concerning these things; I would show unto the world that faith is things which are hoped for and not seen; wherefore, dispute not because ye see not, for ye receive no witness until after the trial of your faith.",
-                                  "And if men come unto me I will show unto them their weakness. I give unto men weakness that they may be humble; and my grace is sufficient for all men that humble themselves before me; for if they humble themselves before me, and have faith in me, then will I make weak things become strong unto them.",
-                                  "And what is it that ye shall hope for? Behold I say unto you that ye shall have hope through the atonement of Christ and the power of his resurrection, to be raised unto life eternal, and this because of your faith in him according to the promise.",
-                                  "And charity suffereth long, and is kind, and envieth not, and is not puffed up, seeketh not her own, is not easily provoked, thinketh no evil, and rejoiceth not in iniquity but rejoiceth in the truth, beareth all things, believeth all things, hopeth all things, endureth all things. But charity is the pure love of Christ, and it endureth forever; and whoso is found possessed of it at the last day, it shall be well with him. Wherefore, my beloved brethren, pray unto the Father with all the energy of heart, that ye may be filled with this love, which he hath bestowed upon all who are true followers of his Son, Jesus Christ; that ye may become the sons of God; that when he shall appear we shall be like him, for we shall see him as he is; that we may have this hope; that we may be purified even as he is pure. Amen.",
-                                  "And when ye shall receive these things, I would exhort you that ye would ask God, the Eternal Father, in the name of Christ, if these things are not true; and if ye shall ask with a sincere heart, with real intent, having faith in Christ, he will manifest the truth of it unto you, by the power of the Holy Ghost. And by the power of the Holy Ghost ye may know the truth of all things."]
+                                  /*"Therefore I would that ye should be perfect even as I, or your Father who is in heaven is perfect.",*/
+                                  /*"And now, I, Moroni, would speak somewhat concerning these things; I would show unto the world that faith is things which are hoped for and not seen; wherefore, dispute not because ye see not, for ye receive no witness until after the trial of your faith.",*/
+                                  /*"And if men come unto me I will show unto them their weakness. I give unto men weakness that they may be humble; and my grace is sufficient for all men that humble themselves before me; for if they humble themselves before me, and have faith in me, then will I make weak things become strong unto them.",*/
+                                  /*"And what is it that ye shall hope for? Behold I say unto you that ye shall have hope through the atonement of Christ and the power of his resurrection, to be raised unto life eternal, and this because of your faith in him according to the promise.",*/
+                                  "And charity suffereth long, and is kind, and envieth not, and is not puffed up, seeketh not her own, is not easily provoked, thinketh no evil, and rejoiceth not in iniquity but rejoiceth in the truth, beareth all things, believeth all things, hopeth all things, endureth all things. But charity is the pure love of Christ, and it endureth forever; and whoso is found possessed of it at the last day, it shall be well with him. Wherefore, my beloved brethren, pray unto the Father with all the energy of heart, that ye may be filled with this love, which he hath bestowed upon all who are true followers of his Son, Jesus Christ; that ye may become the sons of God; that when he shall appear we shall be like him, for we shall see him as he is; that we may have this hope; that we may be purified even as he is pure. Amen."]
 
                 },
-                channels: ""
+                channels: "<#455111343415230474> or <#455111030314369024>"
             },
-            d_c = {
-                name: "Doctrine and Covenants",
+            /*d_c = {
+                name: "Doctrine and Covenants:",
                 icon: "",
                 colour: 0xcf9b17,
                 passage : {
                     passageName: ["Doctrine and Covenants 1:37-38", "Doctrine and Covenants 6:36", "Doctrine and Covenants 8:2–3", "Doctrine and Covenants 13:1", "Doctrine and Covenants 18:10–11", "Doctrine and Covenants 18:15-16", "Doctrine and Covenants 19:16–19", "Doctrine and Covenants 21:4–6", "Doctrine and Covenants 29:10–11", "Doctrine and Covenants 42:11", "Doctrine and Covenants 49:15–17", "Doctrine and Covenants 58:42–43", "Doctrine and Covenants 64:9–11", "Doctrine and Covenants 6:22–24", "Doctrine and Covenants 82:10", "Doctrine and Covenants 84:20–22", "Doctrine and Covenants 88:118", "Doctrine and Covenants 89:18–21", "Doctrine and Covenants 107:8", "Doctrine and Covenants 121:36, 41–42", "Doctrine and Covenants 130:22–23", "Doctrine and Covenants 131:1–4", "Doctrine and Covenants 135:3"],
                     passageText: ["Search these commandments, for they are true and faithful, and the prophecies and promises which are in them shall all be fulfilled. What I the Lord have spoken, I have spoken, and I excuse not myself; and though the heavens and the earth pass away, my word shall not pass away, but shall all be fulfilled, whether by mine own voice or by the voice of my servants, it is the same.",
-                                  "Look unto me in every thought; doubt not, fear not.",
-                                  "",
-                                  "",
-                                  "",
-                                  "",
-                                  "",
-                                  "",
-                                  "",
-                                  "",
-                                  "",
-                                  "",
-                                  "",
-                                  "",
-                                  "",
-                                  "",
-                                  "",
-                                  "",
-                                  "",
-                                  "",
-                                  "",
-                                  "",
-                                  "",
-                                  ""]
+                                  "Look unto me in every thought; doubt not, fear not."]
                 },
-                channels: ""
-            },
-            pgp = {
-                name: "",
+                channels: "<#455111343415230474> or <#455111030314369024>"
+            },*/
+            /*pgp = {
+                name: "Pearl of Great Price:",
                 icon: "",
                 colour: 0xcf9b17,
                 passage : {
@@ -616,11 +582,11 @@ bot.on("message", (message) => {
                     passageText: ["For behold, this is my work and my glory—to bring to pass the immortality and eternal life of man.",
                                   "And the Lord called his people Zion, because they were of one heart and one mind, and dwelt in righteousness;"]
                 },
-                channels: ""
-            },
-            //Jewish
+                channels: "<#455111343415230474> or <#455111030314369024>"
+            },*/
+            /*//Jewish
             bible = {
-                name: "",
+                name: "Hebrew Bible (Old Testament):",
                 icon: "",
                 colour: 0x1fbae4,
                 passage : {
@@ -628,17 +594,7 @@ bot.on("message", (message) => {
                     passageText: []
                 },
                 channels: "<#455111365363892235>, <#455111068499312653>, <#455111343415230474>, <#455111412965179402> or <#455111030314369024>"
-            },
-            talmud = {
-                name: "",
-                icon: "",
-                colour: 0x1fbae4,
-                passage : {
-                    passageName: [],
-                    passageText: []
-                },
-                channels: ""
-            },
+            },*/
             //Bahá'í
             bahai = {
                 name: "Bahá'í Quotes:",
@@ -667,45 +623,10 @@ bot.on("message", (message) => {
                 ]
             }
             })
-            daily.send(`@ everyone feel free to discuss today's passage in ${book[bookNum].channels} 😄`)
+            daily.send(`@everyone feel free to discuss today's passage in ${book[bookNum].channels} 😄`)
         }
-});
-
-/*bot.on('ready', () => {
-    var j = schedule.scheduleJob({hour: 21, minute: 38}, function() {
-        var book = Math.floor(Math.random() * 8);
-        const rod = bot.guilds.get('359925003359354890')
-        const daily = rod.channels.find('name', 'daily-passage')
-        var passage = Math.floor(Math.random() * 6);
-        const bible = [
-            name = "New Testament (KJV)",
-            icon = "https://is3-ssl.mzstatic.com/image/thumb/Purple128/v4/18/e0/c7/18e0c7e2-be8b-4d14-149c-c195d8409e32/source/512x512bb.jpg",
-            colour = 0x90b1e5,
-            passage = [
-                passageName = ["John 3:16", "Matthew 6:9-13", "John 14:6", "Luke 11:9-10", "Ephesians 2:8"],
-                passageText = ["For God so loved the world, that he gave his only begotten Son, that whosoever believeth in him should not perish, but have everlasting life.",
-                               "Our Father which art in heaven, Hallowed be thy name. Thy kingdom come, Thy will be done in earth, as it is in heaven. Give us this day our daily bread. And forgive us our debts, as we forgive our debtors.  And lead us not into temptation, but deliver us from evil: For thine is the kingdom, and the power, and the glory, for ever. Amen.",
-                               "Jesus saith unto him, I am the way, the truth, and the life: no man cometh unto the Father, but by me.",
-                               "And I say unto you, Ask, and it shall be given you; seek, and ye shall find; knock, and it shall be opened unto you. For every one that asketh receiveth; and he that seeketh findeth; and to him that knocketh it shall be opened.",
-                               "For by grace are ye saved through faith; and that not of yourselves: it is the gift of God:"
-                            ]
-            ],
-            channels = ["<#455111068499312653>", "<#455111068499312653>", "<#455111068499312653>"]
-        ];
-            daily.send({embed: {
-                author: {
-                    name: bible.name,
-                    icon_url: bible.icon
-                },
-                color: bible.colour,
-                fields: [
-                { name: bible.passage.passageName[passage], value: bible.passage.passageText[[assage]], inline: true},
-                ]
-            }
-            })
-            daily.send(`@everyone feel free to discuss today's passage in ${bible.channels[1]}, ${bible.channels[2]} or ${bible.channels[3]} 😄`)
       });
-});*/
+});
 
 bot.on('guildMemberAdd', member => {
     const unverified = member.guild.channels.find('name', 'unverified');
@@ -739,6 +660,5 @@ bot.on('guildMemberRemove', member => {
 });
 
 
-console.log("Bot on.")
 //Bot login Token.
 bot.login(process.env.BOT_TOKEN);
