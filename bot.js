@@ -450,7 +450,7 @@ bot.on("message", (message) => {
         message.reply('That\'s nice but who do you want to ban?');
       }
     }
-
+});
 bot.on('ready', () => {
     var j = schedule.scheduleJob({hour: 11, minute: 00}, function() {
         const rod = bot.guilds.get('359925003359354890')
@@ -623,7 +623,7 @@ bot.on('ready', () => {
             daily.send(`@everyone feel free to discuss today's passage in ${book[bookNum].channels} 😄`)
     }
     );
-
+});
 bot.on('guildMemberAdd', member => {
     const unverified = member.guild.channels.find('name', 'unverified');
     const logs = member.guild.channels.find('name', 'join-log')
