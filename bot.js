@@ -39,7 +39,7 @@ bot.on("message", (message) => {
             title: "Assignable Roles:\n\n",
             color: 0xF1DA75,
             fields: [
-            { name: "Abrahamic:", value: "Christian\nMuslim\nJewish\nBahá'í", inline: true},
+            { name: "Abrahamic:", value: "Christian\nMuslim\nJew\nBahá'í", inline: true},
             { name: "Eastern:", value: "Hindu\nBuddhist\nDaoist\nConfucian\nSikhi", inline: true},
             { name: "Other:", value: "Unitarian Universalist\nIrreligious\nPagan\nGnostic\nPanentheist\nOther\n\n**To see available denomination roles do \`.denominations\`**", inline: true}
             ]
@@ -57,7 +57,7 @@ bot.on("message", (message) => {
             { name: "Irreligious:", value: "Atheist\nAgnostic\nIgnostic", inline: true},
             { name: "Hindu:", value: "Vaishnavi\nShaivi", inline: true},
             { name: "Buddhist:", value: "Theravada\nMahayana\nVajrayana", inline: true},
-            { name: "Jewish:", value: "Orthodox Jew\nConservative Jew\nReformed Jew\nReconstructionist Jew\n\nContact a moderator if there is a role you think should be added.", inline: true}
+            { name: "Jew:", value: "Orthodox Jew\nConservative Jew\nReformed Jew\nReconstructionist Jew\n\nContact a moderator if there is a role you think should be added.", inline: true}
             ]
           }
         });
@@ -343,7 +343,7 @@ bot.on("message", (message) => {
 });
 
 bot.on('ready', () => {
-    var j = schedule.scheduleJob({hour: 7, minute: 03}, function() {
+    var j = schedule.scheduleJob({hour: 16, minute: 00}, function() {
         const rod = bot.guilds.get('359925003359354890')
         const daily = rod.channels.find('name', 'daily-passage')
         var passageNum = Math.floor(Math.random() * 6);
@@ -520,7 +520,7 @@ bot.on('guildMemberAdd', member => {
     const logs = member.guild.channels.find('name', 'join-log')
 
     if (!unverified) return;
-    unverified.send(`Welcome ${member} to **Religious Online Discussions**! We are a server dedicated to Interfaith cooperation to study religion and other philosophies to bring us closer to any Power we believe in whether that be one God, many gods, no god, etc.\nTo get yourself started please do \`.religions\` to check out the roles we have and do \`.iam [role]\` to add the role to yourself. Once you have at least one role use \`.done\`.\nContact a staff member if you need assistance and enjoy your time here.`);
+    unverified.send(`Welcome ${member} to **Religious Online Discussions**! We are a server dedicated to Interfaith cooperation to study religion and other philosophies to bring us closer to any Power we believe in whether that be one God, many gods, no god, etc.\nTo get yourself started please do \`.religions\` to check out the roles we have and do \`.iam [role]\` to add a role to yourself (it is case sensitive. All religions are proper nouns \`.iam Muslim\` will work, but not \`.iam muslim\`). Once you have at least one role use \`.done\`.\nContact a staff member if you need assistance and enjoy your time here.`);
     member.addRole(member.guild.roles.find("name", "Unverified"))
     logs.send({embed: {
         title: "User joined:\n\n",
