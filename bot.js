@@ -520,7 +520,7 @@ bot.on('guildMemberAdd', member => {
     const logs = member.guild.channels.find('name', 'join-log')
 
     if (!unverified) return;
-    unverified.send(`Welcome ${member} to **Religious Online Discussions**! We are a server dedicated to Interfaith cooperation to study religion and other philosophies to bring us closer to any Power we believe in whether that be one God, many gods, no god, etc.\nTo get yourself started please do \`.religions\` to check out the roles we have and do \`.iam [role]\` to add a role to yourself (it is case sensitive. All religions are proper nouns \`.iam Muslim\` will work, but not \`.iam muslim\`). Once you have at least one role use \`.done\`.\nContact a staff member if you need assistance and enjoy your time here.`);
+    unverified.send(`Welcome ${member} to **Religious Online Discussions**! We are a server dedicated to Interfaith cooperation to study religion and other philosophies to bring us closer to any Power we believe in whether that be one God, many gods, no god, etc.\nTo get yourself started please type \`.religions\` to check out the roles we have and do \`.iam [role]\` to add a role to yourself (the role assignment is case sensitive. All religions are proper nouns \`.iam Muslim\` will work, but not \`.iam muslim\`). Once you have at least one role use \`.done\`.\nContact a staff member if you need assistance and enjoy your time here.`);
     member.addRole(member.guild.roles.find("name", "Unverified"))
     logs.send({embed: {
         title: "User joined:\n\n",
