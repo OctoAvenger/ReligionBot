@@ -1,4 +1,3 @@
-
 //Defines bot/prefix and languages used.
 const Discord = require("discord.js");
 const fs = require("fs");
@@ -93,7 +92,7 @@ bot.on("message", (message) => {
         const logs = message.member.guild.channels.find('name', 'role-log');
         let role = message.guild.roles.find("name", message.content.slice(6, message.content.length));
         message.member.removeRole(role).then(() => {
-            message.reply(`Successfully removed \`${message.content.slice(6, message.content.length)}\``);
+            message.reply(`Successfully removed \`${message.content.slice(5, message.content.length)}\``);
             logs.send({embed: {
                 title: "User removed role:\n\n",
                 color: 0xaa3333,
@@ -104,9 +103,27 @@ bot.on("message", (message) => {
                 }
             });
             }).catch(err => {
-            if (!message.content.startsWith(prefix + "iamn")) {
-                message.reply(`I was unable to remove \`${message.content.slice(5, message.content.length)}\` role. Please make sure that role exists and that you have permission to add it.`);
+            if (!message.content.startsWith(prefix + "iamnot")) {
+                message.reply(`I was unable to remove \`${message.content.slice(6, message.content.length)}\` role. Please make sure that role exists and that you have permission to remove it.`);
             }
+        });
+    }
+    if (message.content.startsWith(prefix + "iamnot")) {
+        const logs = message.member.guild.channels.find('name', 'role-log');
+        let role = message.guild.roles.find("name", message.content.slice(8, message.content.length));
+        message.member.removeRole(role).then(() => {
+            message.reply(`Successfully removed \`${message.content.slice(7, message.content.length)}\``);
+            logs.send({embed: {
+                title: "User removed role:\n\n",
+                color: 0xaa3333,
+                fields: [
+                    { name: "Username:", value: `${message.member.user.username}#${message.member.user.discriminator}\n\nUser ID: ${message.member.id}`, inline: true},
+                    { name: "Role:", value: role.name, inline: true},
+                ]
+                }
+            });
+            }).catch(err => {
+            message.reply(`I was unable to remove \`${message.content.slice(8, message.content.length)}\` role. Please make sure that role exists and that you have permission to remove it.`);
         });
     }
     if (message.content.startsWith(prefix + 'suggest')) {
