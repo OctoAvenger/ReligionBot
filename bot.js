@@ -93,7 +93,7 @@ bot.on("message", (message) => {
         const logs = message.member.guild.channels.find('name', 'role-log');
         let role = message.guild.roles.find("name", message.content.slice(6, message.content.length));
         message.member.removeRole(role).then(() => {
-            message.reply(`Successfully removed \`${message.content.slice(5, message.content.length)}\``);
+            message.reply(`Successfully removed \`${message.content.slice(6, message.content.length)}\``);
             logs.send({embed: {
                 title: "User removed role:\n\n",
                 color: 0xaa3333,
@@ -104,27 +104,9 @@ bot.on("message", (message) => {
                 }
             });
             }).catch(err => {
-            if (!message.content.startsWith(prefix + "iamnot")) {
-                message.reply(`I was unable to remove \`${message.content.slice(6, message.content.length)}\` role. Please make sure that role exists and that you have permission to remove it.`);
+            if (!message.content.startsWith(prefix + "iamn")) {
+                message.reply(`I was unable to remove \`${message.content.slice(5, message.content.length)}\` role. Please make sure that role exists and that you have permission to add it.`);
             }
-        });
-    }
-    if (message.content.startsWith(prefix + "iamnot")) {
-        const logs = message.member.guild.channels.find('name', 'role-log');
-        let role = message.guild.roles.find("name", message.content.slice(8, message.content.length));
-        message.member.removeRole(role).then(() => {
-            message.reply(`Successfully removed \`${message.content.slice(7, message.content.length)}\``);
-            logs.send({embed: {
-                title: "User removed role:\n\n",
-                color: 0xaa3333,
-                fields: [
-                    { name: "Username:", value: `${message.member.user.username}#${message.member.user.discriminator}\n\nUser ID: ${message.member.id}`, inline: true},
-                    { name: "Role:", value: role.name, inline: true},
-                ]
-                }
-            });
-            }).catch(err => {
-            message.reply(`I was unable to remove \`${message.content.slice(8, message.content.length)}\` role. Please make sure that role exists and that you have permission to remove it.`);
         });
     }
     if (message.content.startsWith(prefix + 'suggest')) {
@@ -511,7 +493,7 @@ bot.on('ready', () => {
                 ]
             }
         })
-            daily.send(`@everyone feel free to discuss today's passage in ${book[bookNum].channels} 😄`)
+            daily.send(`@Daily Passage feel free to discuss today's passage in ${book[bookNum].channels} 😄\nIf you don't wish to receive a ping for Daily Passages, simply type, \`.iamn Daily Passage\``)
       });
 });
 
@@ -522,6 +504,7 @@ bot.on('guildMemberAdd', member => {
     if (!unverified) return;
     unverified.send(`Welcome ${member} to **Religious Online Discussions**! We are a server dedicated to Interfaith cooperation to study religion and other philosophies to bring us closer to any Power we believe in whether that be one God, many gods, no god, etc.\nTo get yourself started please type \`.religions\` to check out the roles we have and do \`.iam [role]\` to add a role to yourself (the role assignment is case sensitive. All religions are proper nouns \`.iam Muslim\` will work, but not \`.iam muslim\`). Once you have at least one role use \`.done\`.\nContact a staff member if you need assistance and enjoy your time here.`);
     member.addRole(member.guild.roles.find("name", "Unverified"))
+    member.addRole(member.guild.roles.find("name", "Daily Passage"))
     logs.send({embed: {
         title: "User joined:\n\n",
         color: 0x66ba67,
