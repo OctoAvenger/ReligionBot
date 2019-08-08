@@ -146,6 +146,10 @@ bot.on("message", (message) => {
             .then(sentEmbed.react("👎"))
         })
     }
+    if (lowerCaseMessage.startsWith(prefix + "wiki")) {
+        const query = message.content.slice(6, message.content.length).replace(/ /g, "_");
+        message.channel.send(`https://en.wikipedia.org/wiki/${query}`);
+    }
     //Moderation commands
     if (message.content.startsWith(prefix + 'delete')) {
         if(!message.member.roles.some(r=>["Administrator", "Moderator"].includes(r.name)))
