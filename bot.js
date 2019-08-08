@@ -27,7 +27,7 @@ bot.on("message", (message) => {
               },
             color: 0xF1DA75,
             fields: [
-            { name: `General Commands:`, value: ".religions - displays all availible religious roles\n.denominations - displays all availible religious denomination roles.\n.iam - `.iam [role]`\n.iamn - `.iamn [role]`\n.suggest - `.suggest [suggestion]`", inline: true},
+            { name: `General Commands:`, value: ".religions - displays all availible religious roles\n.denominations - displays all availible religious denomination roles.\n.iam - `.iam [role]`\n.iamn - `.iamn [role]`\n.suggest - `.suggest [suggestion]`\n.wiki - `.wiki [search]`", inline: true},
             { name: `Moderation Commads:`, value: ".ar - `.ar @[user] [role]`\n.rr - `.rr @[user] [role]`\n.delete - `.delete [number]`\n.mute - `.mute @[user] [reason]`\n.unmute - `.unmute @[user] [reason]`\n.inspect - `.inspect @[user] [reason]`\n.forgive - `.forgive @[user] [reason]`\n.kick - `.kick @[user] [reason]`\n.ban - `.ban @[user] [reason]`", inline: true},
             ]
           }
@@ -52,7 +52,7 @@ bot.on("message", (message) => {
             fields: [
             { name: "Christian (1):", value: "Catholic\nOrthodox\nAnglican\nBaptist\nLutheran\nMethodist", inline: true},
             { name: "Christian (2):", value: "Reformed\nLatter-Day Saint\nJehovah's Witness\nMessianic Jew\nCongregational", inline: true},
-            { name: "Muslim:", value: "Sunni\nShia\nQuranist\nSufi", inline: true},
+            { name: "Muslim:", value: "Sunni\nShia\nSufi\nAhmadiyya\nQuranist", inline: true},
             { name: "Irreligious:", value: "Atheist\nAgnostic\nIgnostic", inline: true},
             { name: "Hindu:", value: "Vaishnavi\nShaivi", inline: true},
             { name: "Buddhist:", value: "Theravada\nMahayana\nVajrayana", inline: true},
