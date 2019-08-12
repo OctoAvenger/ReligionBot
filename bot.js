@@ -54,7 +54,7 @@ bot.on("message", (message) => {
             { name: "Christian (2):", value: "Reformed\nLatter-Day Saint\nJehovah's Witness\nMessianic Jew\nCongregational", inline: true},
             { name: "Muslim:", value: "Sunni\nShia\nSufi\nAhmadiyya\nQuranist", inline: true},
             { name: "Irreligious:", value: "Atheist\nAgnostic\nIgnostic", inline: true},
-            { name: "Hindu:", value: "Vaishnavi\nShaivi", inline: true},
+            { name: "Hindu:", value: "Vaishnavi\nShaivi\nShakti", inline: true},
             { name: "Buddhist:", value: "Theravada\nMahayana\nVajrayana", inline: true},
             { name: "Jew:", value: "Orthodox Jew\nConservative Jew\nReformed Jew\nReconstructionist Jew\n\nContact a moderator if there is a role you think should be added.", inline: true}
             ]
