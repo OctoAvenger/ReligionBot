@@ -7,7 +7,7 @@ const bot = new Discord.Client();
 const prefix = ".";
 
 bot.on('ready', () => {
-    bot.user.setStatus('available')
+    bot.user.setStatus('available');
     bot.user.setPresence({
         game: {
             name: `commands. Try ".help"`,
@@ -18,8 +18,10 @@ bot.on('ready', () => {
 
 //Message Commands ReligionBot can proform.
 bot.on("message", (message) => {
+
+    command = message.content.split(" ")[0].substr(1);
     //Help message. Useful for new users.
-    if (message.content == prefix + "help") {
+    if (command === "help") {
         message.channel.send({embed: {
             author: {
                 name: `My commands are as follows:`,
@@ -33,7 +35,7 @@ bot.on("message", (message) => {
           }
         });
     }
-    if (message.content == prefix + "religions") {
+    if (command === "religions") {
         message.channel.send({embed: {
             title: "Assignable Roles:\n\n",
             color: 0xF1DA75,
@@ -45,7 +47,7 @@ bot.on("message", (message) => {
           }
         });
     }
-    if (message.content == prefix + "denominations") {
+    if (command === "denominations") {
         message.channel.send({embed: {
             title: "Assignable Roles:\n\n",
             color: 0xF1DA75,
@@ -61,72 +63,88 @@ bot.on("message", (message) => {
           }
         });
     }
-    if (message.content.startsWith(prefix + "iam")) {
+    if (command === 'iam') {
         const logs = message.member.guild.channels.find('name', 'role-log');
         let role = message.guild.roles.find("name", message.content.slice(5, message.content.length));
-        message.member.addRole(role).then(() => {
-            message.reply(`Successfully added \`${message.content.slice(5, message.content.length)}\``);
-            logs.send({embed: {
-                title: "User added role:\n\n",
-                color: 0x66ba67,
-                fields: [
-                    { name: "Username:", value: `${message.member.user.username}#${message.member.user.discriminator}\n\nUser ID: ${message.member.id}`, inline: true},
-                    { name: "Role:", value: role.name, inline: true},
-                ]
+        if(role){
+            message.member.addRole(role).then(() => {
+                message.reply(`Successfully added \`${message.content.slice(5, message.content.length)}\``);
+                if(logs){
+                    logs.send({embed: {
+                            title: "User added role:\n\n",
+                            color: 0x66ba67,
+                            fields: [
+                                { name: "Username:", value: `${message.member.user.username}#${message.member.user.discriminator}\n\nUser ID: ${message.member.id}`, inline: true},
+                                { name: "Role:", value: role.name, inline: true},
+                            ]
+                        }
+                    });
+                }
+            }).catch(err => {
+                if (!message.content.startsWith(prefix + "iamn")) {
+                    message.reply(`I was unable to add \`${message.content.slice(5, message.content.length)}\` role. Please make sure that role exists and that you have permission to add it.`);
                 }
             });
-            }).catch(err => {
-            if (!message.content.startsWith(prefix + "iamn")) {
-                message.reply(`I was unable to add \`${message.content.slice(5, message.content.length)}\` role. Please make sure that role exists and that you have permission to add it.`);
-            }
-        });
+        } else {
+            message.reply(`Could not update role, unable to find: \`${message.content.slice(5, message.content.length)}\``);
+            return
+        }
     }
-    if (message.content == prefix + "done" && message.channel.name == 'unverified' && message.member.roles.size > 2) {
+    if (command === "done" && message.channel.name === "unverified" && message.member.roles.size > 2) {
         const general = message.member.guild.channels.find('name', 'general');
         const unverified = message.guild.roles.find("name", "Unverified");
         message.member.removeRole(unverified).then(() => {
             general.send(`Welcome, ${message.member.user}!\nIf you'd like to add roles type \`.religions\` or \`.denominations\` in <#455112761769459723>.`);
         });
     }
-    if (message.content.startsWith(prefix + "iamn")) {
+    if (command === 'iamn') {
         const logs = message.member.guild.channels.find('name', 'role-log');
         let role = message.guild.roles.find("name", message.content.slice(6, message.content.length));
-        message.member.removeRole(role).then(() => {
-            message.reply(`Successfully removed \`${message.content.slice(5, message.content.length)}\``);
-            logs.send({embed: {
-                title: "User removed role:\n\n",
-                color: 0xaa3333,
-                fields: [
-                    { name: "Username:", value: `${message.member.user.username}#${message.member.user.discriminator}\n\nUser ID: ${message.member.id}`, inline: true},
-                    { name: "Role:", value: role.name, inline: true},
-                ]
+        if(role) {
+            message.member.removeRole(role).then(() => {
+                message.reply(`Successfully removed \`${message.content.slice(5, message.content.length)}\``);
+                if(logs){
+                    logs.send({embed: {
+                            title: "User removed role:\n\n",
+                            color: 0xaa3333,
+                            fields: [
+                                { name: "Username:", value: `${message.member.user.username}#${message.member.user.discriminator}\n\nUser ID: ${message.member.id}`, inline: true},
+                                { name: "Role:", value: role.name, inline: true},
+                            ]
+                        }
+                    });
+                }
+            }).catch(err => {
+                if (!message.content.startsWith(prefix + "iamnot")) {
+                    message.reply(`I was unable to remove \`${message.content.slice(6, message.content.length)}\` role. Please make sure that role exists and that you have permission to remove it.`);
                 }
             });
-            }).catch(err => {
-            if (!message.content.startsWith(prefix + "iamnot")) {
-                message.reply(`I was unable to remove \`${message.content.slice(6, message.content.length)}\` role. Please make sure that role exists and that you have permission to remove it.`);
-            }
-        });
+        } else {
+            message.reply(`Could not update role, unable to find: \`${message.content.slice(6, message.content.length)}\``);
+            return
+        }
     }
-    if (message.content.startsWith(prefix + "iamnot")) {
+    if (command === "iamnot") {
         const logs = message.member.guild.channels.find('name', 'role-log');
         let role = message.guild.roles.find("name", message.content.slice(8, message.content.length));
         message.member.removeRole(role).then(() => {
             message.reply(`Successfully removed \`${message.content.slice(7, message.content.length)}\``);
-            logs.send({embed: {
-                title: "User removed role:\n\n",
-                color: 0xaa3333,
-                fields: [
-                    { name: "Username:", value: `${message.member.user.username}#${message.member.user.discriminator}\n\nUser ID: ${message.member.id}`, inline: true},
-                    { name: "Role:", value: role.name, inline: true},
-                ]
-                }
-            });
-            }).catch(err => {
+            if(logs){
+                logs.send({embed: {
+                        title: "User removed role:\n\n",
+                        color: 0xaa3333,
+                        fields: [
+                            { name: "Username:", value: `${message.member.user.username}#${message.member.user.discriminator}\n\nUser ID: ${message.member.id}`, inline: true},
+                            { name: "Role:", value: role.name, inline: true},
+                        ]
+                    }
+                });
+            }
+        }).catch(err => {
             message.reply(`I was unable to remove \`${message.content.slice(8, message.content.length)}\` role. Please make sure that role exists and that you have permission to remove it.`);
         });
     }
-    if (message.content.startsWith(prefix + 'suggest')) {
+    if (command === "suggest") {
         message.delete(1000);
         let embed = {embed: {
             author: {
@@ -146,32 +164,34 @@ bot.on("message", (message) => {
             .then(sentEmbed.react("👎"))
         })
     }
-    if (message.content.startsWith(prefix + "wiki")) {
+    if (command === "wiki") {
         const query = message.content.slice(6, message.content.length).replace(/ /g, "_");
         message.channel.send(`https://en.wikipedia.org/wiki/${query}`);
     }
     //Moderation commands
-    if (message.content.startsWith(prefix + 'delete')) {
+    if (command === "delete") {
         if(!message.member.roles.some(r=>["Administrator", "Moderator"].includes(r.name)))
         return message.reply("Sorry, you don't have permissions to use this!");
             const logs = message.member.guild.channels.find('name', 'delete-log');
             message.delete(100).then(() => {
             message.channel.bulkDelete(message.content.slice(8, message.content.length)).then(() => {
             message.reply(`Successfully deleted \`${message.content.slice(8, message.content.length)}\` messages`).then(msg => msg.delete(3000));
-            logs.send({embed: {
-                title: "Deleted Messages:\n\n",
-                color: 0x5a5a5a,
-                fields: [
-                    { name: "Deleted By:", value: `${message.member.user.username}#${message.member.user.discriminator}\n\nUser ID: ${message.member.user.id}`, inline: true},
-                    { name: "Messages Deleted:", value: `${message.content.slice(8, message.content.length)}`, inline: true}
-                ]
-                }
-            });
+            if(logs){
+                logs.send({embed: {
+                        title: "Deleted Messages:\n\n",
+                        color: 0x5a5a5a,
+                        fields: [
+                            { name: "Deleted By:", value: `${message.member.user.username}#${message.member.user.discriminator}\n\nUser ID: ${message.member.user.id}`, inline: true},
+                            { name: "Messages Deleted:", value: `${message.content.slice(8, message.content.length)}`, inline: true}
+                        ]
+                    }
+                });
+            }
             })}).catch(err => {
             message.reply(`I was unable to delete \`${message.content.slice(8, message.content.length)}\` messages. \`${err}\``);
         });
       }
-    if (message.content.startsWith(prefix + "ar")) {
+    if (command === "ar") {
         const user = message.mentions.users.first();
         if(!message.member.roles.some(r=>["Administrator", "Moderator"].includes(r.name)))
             return message.reply("Sorry, you don't have permissions to use this!");
@@ -182,15 +202,16 @@ bot.on("message", (message) => {
                 if (member) {
                     member.addRole(role).then(() => {
                     message.reply(`Successfully added \`${message.content.slice(8 + user.id.length, message.content.length)}\` to ${member.user.username}.`);
-                    logs.send({embed: {
-                        title: "User was given role:\n\n",
-                        color: 0x66ba67,
-                        fields: [
-                           { name: "Username:", value: `${member.user.username}#${member.user.discriminator}\n\nUser ID: ${member.id}`, inline: true},
-                           { name: "Role:", value: role.name, inline: true},
-                        ]
+                    if(logs){
+                        logs.send({embed: {
+                                title: "User was given role:\n\n",
+                                color: 0x66ba67,
+                                fields: [
+                                    { name: "Username:", value: `${member.user.username}#${member.user.discriminator}\n\nUser ID: ${member.id}`, inline: true},
+                                    { name: "Role:", value: role.name, inline: true},
+                                ]
+                            }});
                     }
-                });
             }).catch(err => {
                 message.reply(`I was unable to add \`${message.content.slice(8 + user.id.length, message.content.length)}\` to ${member.user.username}. Please make sure that role exists and that you have permission to add it.`);
             });
@@ -202,7 +223,7 @@ bot.on("message", (message) => {
                 message.reply('That\'s nice but who do you want to add the role to?');
             }
     }
-    if (message.content.startsWith(prefix + "rr")) {
+    if (command === "rr") {
         const user = message.mentions.users.first();
         if(!message.member.roles.some(r=>["Administrator", "Moderator"].includes(r.name)))
             return message.reply("Sorry, you don't have permissions to use this!");
@@ -213,15 +234,16 @@ bot.on("message", (message) => {
                 if (member) {
                     member.removeRole(role).then(() => {
                     message.reply(`Successfully removed \`${message.content.slice(8 + user.id.length, message.content.length)}\` from ${member.user.username}.`);
-                    logs.send({embed: {
-                        title: "User had role removed:\n\n",
-                        color: 0xaa3333,
-                        fields: [
-                           { name: "Username:", value: `${member.user.username}#${member.user.discriminator}\n\nUser ID: ${member.id}`, inline: true},
-                           { name: "Role:", value: role.name, inline: true},
-                        ]
+                    if(logs){
+                        logs.send({embed: {
+                                title: "User had role removed:\n\n",
+                                color: 0xaa3333,
+                                fields: [
+                                    { name: "Username:", value: `${member.user.username}#${member.user.discriminator}\n\nUser ID: ${member.id}`, inline: true},
+                                    { name: "Role:", value: role.name, inline: true},
+                                ]
+                            }});
                     }
-                });
             }).catch(err => {
                 message.reply(`I was unable to remove \`${message.content.slice(8 + user.id.length, message.content.length)}\` from ${member.user.username}. Please make sure that role exists and that you have permission to remove it.`);
             });
@@ -233,7 +255,7 @@ bot.on("message", (message) => {
                 message.reply('That\'s nice but who do you want to take the role from?');
             }
     }
-    if (message.content.startsWith(prefix + 'unmute')) {
+    if (command === "unmute") {
         const user = message.mentions.users.first();
         if(!message.member.roles.some(r=>["Administrator", "Moderator"].includes(r.name)))
         return message.reply("Sorry, you don't have permissions to use this!");
@@ -250,15 +272,17 @@ bot.on("message", (message) => {
                 else {
                     reason = message.content.slice(11 + user.id.length, message.content.length);
                 }
-                logs.send({embed: {
-                    title: "User unmuted:\n\n",
-                    color: 0x5a5a5a,
-                    fields: [
-                        { name: "Username:", value: `${member.user.username}#${member.user.discriminator}\n\nUser ID: ${member.id}`, inline: true},
-                        { name: "Reason:", value: reason, inline: true},
-                    ]
-                    }
-                });
+                if(logs){
+                    logs.send({embed: {
+                            title: "User unmuted:\n\n",
+                            color: 0x5a5a5a,
+                            fields: [
+                                { name: "Username:", value: `${member.user.username}#${member.user.discriminator}\n\nUser ID: ${member.id}`, inline: true},
+                                { name: "Reason:", value: reason, inline: true},
+                            ]
+                        }
+                    });
+                }
                 }).catch(err => {
                 message.reply('I was unable to unmute the member. `' + err + '`');
             });
@@ -269,7 +293,7 @@ bot.on("message", (message) => {
         message.reply('That\'s nice but who do you want to unmute?');
     }
     }
-    if (message.content.startsWith(prefix + 'mute')) {
+    if (command === "mute") {
         const user = message.mentions.users.first();
         if(!message.member.roles.some(r=>["Administrator", "Moderator"].includes(r.name)))
         return message.reply("Sorry, you don't have permissions to use this!");
@@ -286,15 +310,17 @@ bot.on("message", (message) => {
                 else {
                     reason = message.content.slice(10 + user.id.length, message.content.length);
                 }
-                logs.send({embed: {
-                    title: "User muted:\n\n",
-                    color: 0x5a5a5a,
-                    fields: [
-                        { name: "Username:", value: `${member.user.username}#${member.user.discriminator}\n\nUser ID: ${member.id}`, inline: true},
-                        { name: "Reason:", value: reason, inline: true},
-                    ]
-                    }
-                });
+                if(logs){
+                    logs.send({embed: {
+                            title: "User muted:\n\n",
+                            color: 0x5a5a5a,
+                            fields: [
+                                { name: "Username:", value: `${member.user.username}#${member.user.discriminator}\n\nUser ID: ${member.id}`, inline: true},
+                                { name: "Reason:", value: reason, inline: true},
+                            ]
+                        }
+                    });
+                }
                 }).catch(err => {
                 message.reply('I was unable to mute the member. `' + err + '`');
             });
@@ -305,7 +331,7 @@ bot.on("message", (message) => {
         message.reply('That\'s nice but who do you want to mute?');
     }
     }
-    if (message.content.startsWith(prefix + 'inspect')) {
+    if (command === "inspect") {
         const user = message.mentions.users.first();
         if(!message.member.roles.some(r=>["Administrator", "Moderator"].includes(r.name)))
         return message.reply("Sorry, you don't have permissions to use this!");
@@ -324,15 +350,17 @@ bot.on("message", (message) => {
                 else {
                     reason = message.content.slice(13 + user.id.length, message.content.length);
                 }
-                logs.send({embed: {
-                    title: "User put in timeout:\n\n",
-                    color: 0xe5e5e5,
-                    fields: [
-                        { name: "Username:", value: `${member.user.username}#${member.user.discriminator}\n\nUser ID: ${member.id}`, inline: true},
-                        { name: "Reason:", value: reason, inline: true},
-                    ]
-                    }
-                });
+                if(logs){
+                    logs.send({embed: {
+                            title: "User put in timeout:\n\n",
+                            color: 0xe5e5e5,
+                            fields: [
+                                { name: "Username:", value: `${member.user.username}#${member.user.discriminator}\n\nUser ID: ${member.id}`, inline: true},
+                                { name: "Reason:", value: reason, inline: true},
+                            ]
+                        }
+                    });
+                }
                 }).catch(err => {
                 message.reply('I was unable to put the member in timeout `' + err + '`');
             });
@@ -346,7 +374,7 @@ bot.on("message", (message) => {
 });
 
 bot.on('ready', () => {
-    var j = schedule.scheduleJob({hour: 16, minute: 00}, function() {
+    var j = schedule.scheduleJob({hour: 16, minute: 0}, function() {
         const rod = bot.guilds.get('359925003359354890')
         const daily = rod.channels.find('name', 'daily-passage')
         var passageNum = Math.floor(Math.random() * 6);
@@ -526,28 +554,32 @@ bot.on('guildMemberAdd', member => {
     unverified.send(`Welcome ${member} to **Religious Online Discussions**! We are a server dedicated to Interfaith cooperation to study religion and other philosophies to bring us closer to any Power we believe in whether that be one God, many gods, no god, etc.\nTo get yourself started please type \`.religions\` to check out the roles we have and do \`.iam [role]\` to add a role to yourself (the role assignment is case sensitive. All religions are proper nouns \`.iam Muslim\` will work, but not \`.iam muslim\`). Once you have at least one role use \`.done\`.\nContact a staff member if you need assistance and enjoy your time here.`);
     member.addRole(member.guild.roles.find("name", "Unverified"))
     member.addRole(member.guild.roles.find("name", "Daily Passage"))
-    logs.send({embed: {
-        title: "User joined:\n\n",
-        color: 0x66ba67,
-        fields: [
-            { name: "Username:", value: `${member.user.username}#${member.user.discriminator}`, inline: true},
-            { name: "Joined server:", value: `${member.joinedAt}`, inline: true},
-            { name: "Joined Discord:", value: `${member.user.createdAt}\n\nUser ID: ${member.id}`, inline: true}
-        ]
-      }
-    });
+    if(logs){
+        logs.send({embed: {
+                title: "User joined:\n\n",
+                color: 0x66ba67,
+                fields: [
+                    { name: "Username:", value: `${member.user.username}#${member.user.discriminator}`, inline: true},
+                    { name: "Joined server:", value: `${member.joinedAt}`, inline: true},
+                    { name: "Joined Discord:", value: `${member.user.createdAt}\n\nUser ID: ${member.id}`, inline: true}
+                ]
+            }
+        });
+    }
   });
 bot.on('guildMemberRemove', member => {
     const logs = member.guild.channels.find('name', 'join-log')
-    logs.send({embed: {
-        title: "User left:\n\n",
-        color: 0xaa3333,
-        fields: [
-            { name: "Username:", value: `${member.user.username}#${member.user.discriminator}\n\nUser ID: ${member.id}`, inline: true},
-            { name: "Left server:", value: `${member.removedAt}`, inline: true},
-        ]
-        }
-    });
+    if(logs){
+        logs.send({embed: {
+                title: "User left:\n\n",
+                color: 0xaa3333,
+                fields: [
+                    { name: "Username:", value: `${member.user.username}#${member.user.discriminator}\n\nUser ID: ${member.id}`, inline: true},
+                    { name: "Left server:", value: `${member.removedAt}`, inline: true},
+                ]
+            }
+        });
+    }
 });
 
 //Bot login Token.
