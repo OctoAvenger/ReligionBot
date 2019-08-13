@@ -65,7 +65,7 @@ bot.on("message", (message) => {
     }
     if (command === 'iam') {
         const logs = message.member.guild.channels.find('name', 'role-log');
-        let role = message.guild.roles.find("name", message.content.slice(5, message.content.length));
+        let role = findRole(message);
         if(role){
             message.member.addRole(role).then(() => {
                 message.reply(`Successfully added \`${message.content.slice(5, message.content.length)}\``);
@@ -99,7 +99,7 @@ bot.on("message", (message) => {
     }
     if (command === 'iamn') {
         const logs = message.member.guild.channels.find('name', 'role-log');
-        let role = message.guild.roles.find("name", message.content.slice(6, message.content.length));
+        let role = findRole(message);
         if(role) {
             message.member.removeRole(role).then(() => {
                 message.reply(`Successfully removed \`${message.content.slice(5, message.content.length)}\``);
@@ -126,7 +126,7 @@ bot.on("message", (message) => {
     }
     if (command === "iamnot") {
         const logs = message.member.guild.channels.find('name', 'role-log');
-        let role = message.guild.roles.find("name", message.content.slice(8, message.content.length));
+        let role = findRole(message);
         message.member.removeRole(role).then(() => {
             message.reply(`Successfully removed \`${message.content.slice(7, message.content.length)}\``);
             if(logs){
@@ -156,13 +156,13 @@ bot.on("message", (message) => {
             { name: `Suggestion:`, value: message.content.slice(9, message.content.length), inline: true}
             ]
           }
-        }
+        };
         message.channel.send(embed).then(sentEmbed => {
-            sentEmbed.react("👍")
-            const filter = (reaction, user) => reaction.emoji.name === '👍' && user.id === '421725581952942081'
+            sentEmbed.react("👍");
+            const filter = (reaction, user) => reaction.emoji.name === '👍' && user.id === '421725581952942081';
             message.awaitReactions(filter, { time: 35000 })
             .then(sentEmbed.react("👎"))
-        })
+        });
     }
     if (command === "wiki") {
         const query = message.content.slice(6, message.content.length).replace(/ /g, "_");
@@ -197,7 +197,7 @@ bot.on("message", (message) => {
             return message.reply("Sorry, you don't have permissions to use this!");
             if (user) {
                 const logs = message.member.guild.channels.find('name', 'role-log');
-                let role = message.guild.roles.find("name", message.content.slice(8 + user.id.length, message.content.length));
+                let role = findRole(message);
                 const member = message.guild.member(user);
                 if (member) {
                     member.addRole(role).then(() => {
@@ -229,7 +229,7 @@ bot.on("message", (message) => {
             return message.reply("Sorry, you don't have permissions to use this!");
             if (user) {
                 const logs = message.member.guild.channels.find('name', 'role-log');
-                let role = message.guild.roles.find("name", message.content.slice(8 + user.id.length, message.content.length));
+                let role = findRole(message);
                 const member = message.guild.member(user);
                 if (member) {
                     member.removeRole(role).then(() => {
@@ -343,7 +343,7 @@ bot.on("message", (message) => {
                 let inspect = message.guild.roles.find("name", "Timeout");
                 member.addRole(inspect).then(() => {
                 message.reply(`Successfully put ${user} into timeout`);
-                timeout.send(`${user} you have been placed in Timeout for \`${message.content.slice(13 + user.id.length, message.content.length)}\` you are going to have to speak with a moderator about your behavior before you will be able to chat anywhere else.`)
+                timeout.send(`${user} you have been placed in Timeout for \`${message.content.slice(13 + user.id.length, message.content.length)}\` you are going to have to speak with a moderator about your behavior before you will be able to chat anywhere else.`);
                 if (message.content.slice(13 + user.id.length, message.content.length) < 0) {
                     reason = "None given";
                 }
@@ -374,9 +374,9 @@ bot.on("message", (message) => {
 });
 
 bot.on('ready', () => {
-    var j = schedule.scheduleJob({hour: 16, minute: 0}, function() {
-        const rod = bot.guilds.get('359925003359354890')
-        const daily = rod.channels.find('name', 'daily-passage')
+    let j = schedule.scheduleJob({hour: 16, minute: 0}, function() {
+        const rod = bot.guilds.get('359925003359354890');
+        const daily = rod.channels.find('name', 'daily-passage');
         var passageNum = Math.floor(Math.random() * 6);
         var bookNum = Math.floor(Math.random() * 6);
         book = [
@@ -541,19 +541,19 @@ bot.on('ready', () => {
                 { name: book[bookNum].passage.passageName[passageNum], value: book[bookNum].passage.passageText[passageNum], inline: true},
                 ]
             }
-        })
-            daily.send(`<@&608701696629145601> feel free to discuss today's passage in ${book[bookNum].channels} 😄\nIf you don't wish to receive a ping for Daily Passages, simply type, \`.iamn Daily Passage\` in #bots.`)
+        });
+            daily.send(`<@&608701696629145601> feel free to discuss today's passage in ${book[bookNum].channels} 😄\nIf you don't wish to receive a ping for Daily Passages, simply type, \`.iamn Daily Passage\` in #bots.`);
       });
 });
 
 bot.on('guildMemberAdd', member => {
     const unverified = member.guild.channels.find('name', 'unverified');
-    const logs = member.guild.channels.find('name', 'join-log')
+    const logs = member.guild.channels.find('name', 'join-log');
 
     if (!unverified) return;
     unverified.send(`Welcome ${member} to **Religious Online Discussions**! We are a server dedicated to Interfaith cooperation to study religion and other philosophies to bring us closer to any Power we believe in whether that be one God, many gods, no god, etc.\nTo get yourself started please type \`.religions\` to check out the roles we have and do \`.iam [role]\` to add a role to yourself (the role assignment is case sensitive. All religions are proper nouns \`.iam Muslim\` will work, but not \`.iam muslim\`). Once you have at least one role use \`.done\`.\nContact a staff member if you need assistance and enjoy your time here.`);
-    member.addRole(member.guild.roles.find("name", "Unverified"))
-    member.addRole(member.guild.roles.find("name", "Daily Passage"))
+    member.addRole(member.guild.roles.find("name", "Unverified"));
+    member.addRole(member.guild.roles.find("name", "Daily Passage"));
     if(logs){
         logs.send({embed: {
                 title: "User joined:\n\n",
@@ -568,7 +568,7 @@ bot.on('guildMemberAdd', member => {
     }
   });
 bot.on('guildMemberRemove', member => {
-    const logs = member.guild.channels.find('name', 'join-log')
+    const logs = member.guild.channels.find('name', 'join-log');
     if(logs){
         logs.send({embed: {
                 title: "User left:\n\n",
@@ -581,6 +581,22 @@ bot.on('guildMemberRemove', member => {
         });
     }
 });
+
+function findRole(message) {
+    let splitmessage = message.content.split(" ");
+    splitmessage.shift();
+    let rolename = splitmessage.join(" ");
+    let found = null;
+
+    message.guild.roles.forEach(role => {
+        if (role.name) {
+            if (role.name.toLowerCase() === rolename.toLowerCase()){
+                found = role
+            }
+        }
+    });
+    return found
+}
 
 //Bot login Token.
 bot.login(process.env.BOT_TOKEN);
