@@ -38,7 +38,7 @@ function dailyPassage() {
         collector.on('collect', m => {
             if (isNaN(m.content)) m.channel.send("That doesn't look like a number, therefore, it won't work.");
             else {
-                suggestions.messages.fetch(m.content).then(mes => {
+                suggestions.messages.fetchMessage(m.content).then(mes => {
                     if (mes.embeds.length > 0) {
                         switch (mes.author.id) {
                             case "413753566461820928": // HinduBot
