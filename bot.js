@@ -32,7 +32,7 @@ function dailyPassage() {
     chooser.send("Please provide the message ID of the Daily Passage Suggestion you have selected!");
     chooser.createDM().then(c => {
         const filter = m => m.author.id != bot.user.id;
-        const collector = c.createMessageCollector(filter, {
+        const collector = c.createCollector(filter, {
             time: 30000
         });
         collector.on('collect', m => {
