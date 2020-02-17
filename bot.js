@@ -63,7 +63,7 @@ function dailyPassage() {
                                 reference = mes.embeds[0].title;
                                 scripture = mes.embeds[0].description;
                                 color = 0xcf9b17;
-                                icon = bot.user.avatarURL();
+                                icon = bot.user.avatarURL;
                                 name = "Book of Mormon:";
                                 channels = "<#455111343415230474> or <#455111030314369024>"
                                 collector.stop();
