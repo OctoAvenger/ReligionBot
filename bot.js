@@ -97,7 +97,8 @@ function dailyPassage() {
                     }, ]
                 }
             });
-            daily.send(`<@&608701696629145601> feel free to discuss today's passage in ${channels} 😄\nIf you don't wish to receive a ping for Daily Passages, simply type, \`.iamn Daily Passage\` in #bots.`);
+            daily.send(channels);
+            //daily.send(`<@&608701696629145601> feel free to discuss today's passage in ${channels} 😄\nIf you don't wish to receive a ping for Daily Passages, simply type, \`.iamn Daily Passage\` in #bots.`);
         });
     });
 }
