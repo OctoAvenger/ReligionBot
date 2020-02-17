@@ -63,7 +63,7 @@ function dailyPassage() {
                                 reference = mes.embeds[0].title;
                                 scripture = mes.embeds[0].description;
                                 color = 0xcf9b17;
-                                icon = bot.user.avatarURL();
+                                icon = bot.user.avatarURL;
                                 name = "Book of Mormon:";
                                 channels = "<#455111343415230474> or <#455111030314369024>"
                                 collector.stop();
@@ -97,7 +97,8 @@ function dailyPassage() {
                     }, ]
                 }
             });
-            daily.send(`<@&608701696629145601> feel free to discuss today's passage in ${channels} 😄\nIf you don't wish to receive a ping for Daily Passages, simply type, \`.iamn Daily Passage\` in #bots.`);
+            daily.send(channels);
+            //daily.send(`<@&608701696629145601> feel free to discuss today's passage in ${channels} 😄\nIf you don't wish to receive a ping for Daily Passages, simply type, \`.iamn Daily Passage\` in #bots.`);
         });
     });
 }
