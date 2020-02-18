@@ -47,7 +47,7 @@ function dailyPassage() {
                                 color = mes.embeds[0].color;
                                 icon = "https://cdn.discordapp.com/avatars/413753566461820928/bb6ccc95627f0fb87a7d8b574d8e61a2.png?size=512";
                                 name = "The Vedas:";
-                                channels = "<#455111126007414795> or <#455111030314369024>"
+                                channels = "<@&608701696629145601> feel free to discuss today's passage in <#455111126007414795> or <#455111030314369024> 😄\nIf you don't wish to receive a ping for Daily Passages, simply type, `.iamn Daily Passage` in #bots."
                                 collector.stop();
                                 break;
                             case "361033318273384449": // BibleBot
